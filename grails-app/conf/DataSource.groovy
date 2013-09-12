@@ -18,11 +18,12 @@ environments {
     //    }
 
         dataSource {
-            dbCreate = "create"
+            dbCreate = "create-drop"
             driverClassName = "com.mysql.jdbc.Driver"
             url = "jdbc:mysql://localhost/schoolsData"
             username = "metrorailuser"
             password = "metrorailpassword"
+            logSql = true
         }
     }
     test {
@@ -57,5 +58,14 @@ environments {
             username = "metrorailuser"
             password = "metrorailpassword"
         }
+
+/*
+        dataSource {
+            dbCreate = "update"
+            driverClassName = "com.mysql.jdbc.Driver"
+            url = "jdbc:mysql://localhost/schoolsData"
+            username = "root"
+            password = "jeanne"
+        } */
     }
 }
