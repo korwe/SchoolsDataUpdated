@@ -18,7 +18,7 @@ environments {
     //    }
 
         dataSource {
-            dbCreate = "create-drop"
+            dbCreate = "update"
             driverClassName = "com.mysql.jdbc.Driver"
             url = "jdbc:mysql://localhost/schoolsData"
             username = "metrorailuser"

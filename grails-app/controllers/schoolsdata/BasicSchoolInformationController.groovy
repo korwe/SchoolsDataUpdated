@@ -4,13 +4,18 @@ import org.springframework.dao.DataIntegrityViolationException
 
 class BasicSchoolInformationController {
 
+    def authenticationService
+    //The first element in the list is the search parameter
+    def pageListSize = 301
+
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     BasicSchoolInformationController() {
         session["provinces"] = getProvinces().result
-        session["districtMunicipality"] = getMunicipalities().result
-        session["specialisation"] = getSpecialisations().result
-        session["quintile"] = getQuintiles().result
+        session["districtMunicipality"] = getMunicipalities().sort().result
+        session["specialisation"] = getSpecialisations().sort().result
+        session["quintile"] = getQuintiles().sort().result
+        session["pageListSize"] = pageListSize
     }
 
     def reset() {
@@ -18,11 +23,10 @@ class BasicSchoolInformationController {
         redirect(action: "index")
     }
 
-    def sabc1() {
+    def mappedSchoolInformation() {
     }
 
-
-    def sabc(Long id) {
+    def basicSchoolInformation(Long id) {
         def basicSchoolInformationInstance = BasicSchoolInformation.get(id)
         if (!basicSchoolInformationInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'basicSchoolInformation.label', default: 'BasicSchoolInformation'), id])
@@ -37,22 +41,22 @@ class BasicSchoolInformationController {
     }
 
     def getQuintiles() {
-        def result = BasicSchoolInformation.executeQuery("select distinct a.quintile from BasicSchoolInformation a")
+        def result = BasicSchoolInformation.executeQuery("select distinct a.quintile from BasicSchoolInformation a  order by a.quintile asc")
         [ result: result ]
     }
 
     def getProvinces() {
-        def result = BasicSchoolInformation.executeQuery("select distinct a.province from BasicSchoolInformation a")
+        def result = BasicSchoolInformation.executeQuery("select distinct a.province from BasicSchoolInformation a  order by a.province asc")
         [ result: result ]
     }
 
     def getMunicipalities() {
-        def result = BasicSchoolInformation.executeQuery("select distinct a.districtMunicipality from BasicSchoolInformation a")
+        def result = BasicSchoolInformation.executeQuery("select distinct a.districtMunicipality from BasicSchoolInformation a  order by a.districtMunicipality asc")
         [ result: result ]
     }
 
     def getSpecialisations() {
-        def result = BasicSchoolInformation.executeQuery("select distinct a.specialisation from BasicSchoolInformation a")
+        def result = BasicSchoolInformation.executeQuery("select distinct a.specialisation from BasicSchoolInformation a  order by a.specialisation asc")
         [ result: result ]
     }
 
@@ -147,7 +151,6 @@ class BasicSchoolInformationController {
         }
     }
 
-
     def filter(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         params.offset = params?.offset ?: 0
@@ -158,8 +161,13 @@ class BasicSchoolInformationController {
         def count
         if (session["filterResults"] == null)  {
             def ufr = BasicSchoolInformation.list()
+
+            def basicSchoolInformationInstanceSearchParams = new BasicSchoolInformation()
+            ufr.add(0, basicSchoolInformationInstanceSearchParams)
+
             session["filterResults"] = ufr
-            session["filterResultsCount"] = BasicSchoolInformation.count()
+
+            session["filterResultsCount"] = BasicSchoolInformation.count() + 1
             count = session["filterResultsCount"]
 
             maxi = (maxi >= count) ? (count - 1) : maxi
@@ -182,7 +190,7 @@ class BasicSchoolInformationController {
             }
         }
 
-        render(view: 'filter', model: ['basicSchoolInformationInstanceList': filterResults, 'basicSchoolInformationInstanceTotal': count])
+        render(view: 'mappedSchoolInformation', model: ['basicSchoolInformationInstanceList': filterResults, 'basicSchoolInformationInstanceTotal': count, 'dataSize': count])
     }
 
     //This method strips quotes from the beginning and end of strings. Partially quoted strings are assumed to be
@@ -213,28 +221,19 @@ class BasicSchoolInformationController {
         def count = filterResults.size()
         session["filterResultsCount"] = count
         if (count ==0 ) {
-            render(view: 'filter', model: ['basicSchoolInformationInstanceList': null, 'basicSchoolInformationInstanceTotal': count])
+            render(view: 'mappedSchoolInformation', model: ['basicSchoolInformationInstanceList': null, 'basicSchoolInformationInstanceTotal': count, 'dataSize': count, 'pageListSize': 0])
             return
         }
 
         def offset = params.int('offset') ?: 0
-        def maxi = params.int('max') ?: 10
+        def maxi = params.int('max') ?: pageListSize
         maxi = maxi + offset
         maxi = (maxi >= count) ? (count - 1) : maxi
         def newFilterResults =  filterResults[offset .. maxi]
-        //    if (count>10) {
-        render(view: 'sabc1', model: ['basicSchoolInformationInstanceList': newFilterResults, 'basicSchoolInformationInstanceTotal': count])
-        //    } else
-        //   {
-    //    render(view: 'sabc1', model: ['AaaInstanceList': newFilterResults, 'AaaInstanceTotal': count])
-        //   }
+        render(view: 'mappedSchoolInformation', model: ['basicSchoolInformationInstanceList': newFilterResults, 'basicSchoolInformationInstanceTotal': count, 'dataSize': count, 'pageListSize': pageListSize])
     }
 
     def filterSchools(params) {
-        // def searchResults = {
-        def basicSchoolInformationCriteria = BasicSchoolInformation.createCriteria()
-        def results
-
         def districtMunicipality =  stripStringQuotes(params?.districtMunicipality)
         def cdistrictMunicipality = "${districtMunicipality}"
 
@@ -272,8 +271,62 @@ class BasicSchoolInformationController {
         def cquintile = "${quintile}"
 
         def message = "Search: "
+        def basicSchoolInformationInstanceSearchParams = new BasicSchoolInformation()
+        basicSchoolInformationInstanceSearchParams.schoolName = schoolName
+        basicSchoolInformationInstanceSearchParams.province = province
+        basicSchoolInformationInstanceSearchParams.districtMunicipality = districtMunicipality
 
-        results =   basicSchoolInformationCriteria.list() {
+        if (phase_c) {
+            basicSchoolInformationInstanceSearchParams.phase = "COMBINED SCHOOL"
+        }
+        if (phase_i) {
+            def seperator =''
+            if (basicSchoolInformationInstanceSearchParams.phase)   seperator = '|'
+            basicSchoolInformationInstanceSearchParams.phase += seperator+"INTERMEDIATE SCHOOL"
+        }
+        if (phase_p) {
+            def seperator =''
+            if (basicSchoolInformationInstanceSearchParams.phase)   seperator = '|'
+            basicSchoolInformationInstanceSearchParams.phase += seperator+"PRIMARY SCHOOL"
+        }
+        if (phase_f) {
+            def seperator =''
+            if (basicSchoolInformationInstanceSearchParams.phase)   seperator = '|'
+            basicSchoolInformationInstanceSearchParams.phase += seperator+ "FINISHING SCHOOL"
+        }
+        if (phase_s) {
+            def seperator =''
+            if (basicSchoolInformationInstanceSearchParams.phase)   seperator = '|'
+            basicSchoolInformationInstanceSearchParams.phase += seperator+ "SECONDARY SCHOOL"
+        }
+        basicSchoolInformationInstanceSearchParams.town_City = town_City
+        basicSchoolInformationInstanceSearchParams.specialisation = specialisation
+        basicSchoolInformationInstanceSearchParams.quintile = quintile
+
+        if (sector_i) {
+            basicSchoolInformationInstanceSearchParams.sector = "INDEPENDENT"
+        }
+
+        if (sector_p) {
+            def seperator =''
+            if (basicSchoolInformationInstanceSearchParams.sector)   seperator = '|'
+            basicSchoolInformationInstanceSearchParams.sector += seperator+ "PUBLIC"
+        }
+
+        if (section21 == 'on') {
+            basicSchoolInformationInstanceSearchParams.section21 = "YES"
+        }
+
+        if (noFeeSchool == 'on') {
+            basicSchoolInformationInstanceSearchParams.noFeeSchool = "YES"
+        }
+
+        if (boardingSchool == 'on') {
+            basicSchoolInformationInstanceSearchParams.boardingSchool = "YES"
+        }
+
+        def basicSchoolInformationCriteria = BasicSchoolInformation.createCriteria()
+        def results = basicSchoolInformationCriteria.list() {
             if (province && province != 'No Selection') {
                 ilike("province", cprovince)
                 message += " province: " + province
@@ -384,10 +437,10 @@ class BasicSchoolInformationController {
             }
         }
         session["message"]= message
+        results.add(0,basicSchoolInformationInstanceSearchParams)
         return results
     }
 
     def map() {
     }
-
 }

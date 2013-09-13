@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta name="layout" content="main">
-    <g:set var="entityName" value="${message(code: 'basicSchoolInformation.label', default: 'BasicSchoolInformation')}"/>
+    <g:set var="entityName" value="${message(code: 'BasicSchoolInformation.label', default: 'Basic School Info')}"/>
     <title><g:message code="default.show.label" args="[entityName]"/></title>
 </head>
 
@@ -28,15 +28,13 @@
             <td width="33%">
                 <div align="left">
                     <g:link class="home" action="filter">
-                        <img align="left" width="30%" src="${resource(dir: 'images', file: 'education-university-icon.png')}">
-                    </g:link>
-                </div>
+                        <img align="left" width="30%" src="${resource(dir: 'images', file: 'education-university-icon.png')}"> </g:link></div>
                 <div align="right">
                     <g:link class="home" action="filter"><h1>Schools Advisor</h1> </g:link>  </div>
             </td>
             <td><p>Welcome to <b>SABC SchoolAdvisor</b>, where you can <b>find out more about any of the schools
             in your area</b>. Double-click anywhere on the map to zoom in, or use the selection tools below. Click any
-            school marker on the map to find out more about that school.</p>
+            school marker on the map to find out more about that school. Wildcard Search with %</p>
             </td>
         </tr>
     </table>
@@ -50,41 +48,53 @@
                 <tr>
                     <td width="60%" style="background-color: silver">
 
+       <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=AIzaSyAYFUuLY3qIfWUXOCqgIoX0U-hq617C0tA&sensor=true"
+               type="text/javascript">
+       </script>
+       <script type="text/javascript">
+           var usCenterPoint = new GLatLng(-29, 24)   ;
+           var usZoom = 6;
+           function initialize() {
+               if (GBrowserIsCompatible()) {
+                   var map = new GMap2(document.getElementById("map_canvas"));
+                   map.setCenter( map.setCenter(usCenterPoint, usZoom));
 
+                    <g:each in="${basicSchoolInformationInstanceList}" status="i" var="basicSchoolInformationInstance">
 
-                        <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=AIzaSyAhueJPGZrdm7mvPTfxmHjODBu_FCihFJM&sensor=true"
-                                type="text/javascript">
+                    <g:if test="${i < session['pageListSize']}">
+                        var lat = <g:fieldValue size="150px" bean="${basicSchoolInformationInstance}"  field="latitude"/>
+                        var lon = <g:fieldValue size="150px" bean="${basicSchoolInformationInstance}"  field="longitude"/>
+                        if (!isNaN(lat) || !isNaN(lon)) {
+                            var usPoint = new GLatLng(lat,lon);
+                            var marker = new GMarker(usPoint)  ;
+                            var txt = "<p>${basicSchoolInformationInstance?.schoolName}<br/>";
+                            txt += "contact: ${basicSchoolInformationInstance?.contactPerson}<br/>";
+                            txt += "tel: ${basicSchoolInformationInstance?.cellNo}</p>";
+                            marker.bindInfoWindowHtml( txt);
+                            map.addOverlay(marker)      ;
+                        }
+                        </g:if>
+                   </g:each>
+                   map.setUIToDefault();
+               }
+           }
+
                         </script>
-                        <script type="text/javascript">
-                            var usCenterPoint = new GLatLng(-29,24)   ;
-                            var usZoom = 6;
-                            function initialize() {
-                                if (GBrowserIsCompatible()) {
-                                    var map = new GMap2(document.getElementById("map_canvas"));
-                                    map.setCenter( map.setCenter(usCenterPoint, usZoom));
-
-                                    <g:each in="${basicSchoolInformationInstanceList}" status="i" var="basicSchoolInformationInstance">
-
-                                    <g:if test="${i < 10}">
-                                    var usPoint = new GLatLng(<g:fieldValue size="150px" bean="${basicSchoolInformationInstance}"  field="latitude"/>,
-                                            <g:fieldValue size="150px" bean="${basicSchoolInformationInstance}"  field="longitude"/>)   ;
-                                    var marker = new GMarker(usPoint)  ;
-                                    var txt = "tel: ";<%--+  <g:fieldValue size="150px" bean="${basicSchoolInformationInstance}"  field="schoolName"/> ;   --%>
-                                    <%--     txt = txt + ":"+${basicSchoolInformationInstance?.cellNo};
-                                         txt = txt + ":"+ ${basicSchoolInformationInstance?.contactPerson};  --%>
-                                    marker.bindInfoWindowHtml( txt);
-                                    map.addOverlay(marker)      ;
-                                    </g:if>
-                                    </g:each>
-                                    map.setUIToDefault();
-                                }
-                            }
-
-                        </script>
-
-
 
                         <div id="map_canvas" style="width: 700px; height: 650px"></div>
+
+                        <g:if test="${dataSize == 1}">
+                            <p>No search results</p>
+                        </g:if>
+                        <g:elseif test="${dataSize == 2}">
+                            <p>1 school displayed.</p>
+                        </g:elseif>
+                        <g:elseif test="${dataSize < pageListSize}">
+                            <p>${dataSize-1} schools displayed.</p>
+                        </g:elseif>
+                        <g:else>
+                            <p>${session['pageListSize']-1} schools displayed. ${dataSize-session['pageListSize']} not displayed.</p>
+                        </g:else>
                     </td>
                     <td>
                         <h3>NEWS HEADLINES FROM SABC</h3>
@@ -104,6 +114,8 @@
                 </tr>
                 <tr>
                     <td>
+        <g:each in="${basicSchoolInformationInstanceList}" status="i" var="basicSchoolInformationInstance">
+            <g:if test="${i==0}">
                         <ul style="list-style-type: none; padding-left: 0px;">
                             <li>
                                 <span style="  width: 40px;">
@@ -165,7 +177,7 @@
                                             </label>
                                         </span>
 
-                                        <g:if test="${basicSchoolInformationInstance?.phase =='COMBINED SCHOOL'}">
+                                        <g:if test="${basicSchoolInformationInstance?.phase?.contains('COMBINED SCHOOL')}">
                                             <g:checkBox name="phase_c"  checked="true" />
                                         </g:if>
                                         <g:else>
@@ -177,7 +189,7 @@
                                             </label>
                                         </span>
 
-                                        <g:if test="${basicSchoolInformationInstance?.phase =='INTERMEDIATE SCHOOL'}">
+                                        <g:if test="${basicSchoolInformationInstance?.phase?.contains('INTERMEDIATE SCHOOL')}">
                                             <g:checkBox name="phase_i"  checked="true" />
                                         </g:if>
                                         <g:else>
@@ -189,7 +201,7 @@
                                             </label>
                                         </span>
 
-                                        <g:if test="${basicSchoolInformationInstance?.phase =='PRIMARY SCHOOL'}">
+                                        <g:if test="${basicSchoolInformationInstance?.phase?.contains('PRIMARY SCHOOL')}">
                                             <g:checkBox name="phase_p"  checked="true" />
                                         </g:if>
                                         <g:else>
@@ -210,7 +222,7 @@
                                         </label>
                                     </span>
 
-                                    <g:if test="${basicSchoolInformationInstance?.phase =='SECONDARY SCHOOL'}">
+                                    <g:if test="${basicSchoolInformationInstance?.phase?.contains('SECONDARY SCHOOL')}">
                                         <g:checkBox name="phase_s" checked="true" />
                                     </g:if>
                                     <g:else>
@@ -222,7 +234,7 @@
                                         </label>
                                     </span>
 
-                                    <g:if test="${basicSchoolInformationInstance?.phase =='FINISHING SCHOOL'}">
+                                    <g:if test="${basicSchoolInformationInstance?.phase?.contains('FINISHING SCHOOL')}">
                                         <g:checkBox name="phase_f" checked="true" />
                                     </g:if>
                                     <g:else>
@@ -240,40 +252,6 @@
                             </li>
 
                             <li>
-                                <span style="  width: 40px;">
-                                        <span style=" display: inline-block; width: 150px;">
-                                            <label for="sector">
-                                                <g:message code="basicSchoolInformation.sector.label" default="Sector"/>
-                                            </label>
-                                        </span>
-
-                                        <g:if test="${basicSchoolInformationInstance?.sector =='PUBLIC'}">
-                                            <g:checkBox name="sector_p"  checked="true" />
-                                        </g:if>
-                                        <g:else>
-                                            <g:checkBox name="sector_p"  checked="false"   />
-                                        </g:else>
-                                        <span style=" display: inline-block; width: 150px;">
-                                            <label for="sector">
-                                                <g:message code="basicSchoolInformation.sector.public.label" default="Public"/>
-                                            </label>
-                                        </span>
-
-                                        <g:if test="${basicSchoolInformationInstance?.sector =='INDEPENDENT'}">
-                                            <g:checkBox name="sector_i" checked="true" />
-                                        </g:if>
-                                        <g:else>
-                                            <g:checkBox name="sector_i"  checked="false" />
-                                        </g:else>
-                                        <span style=" display: inline-block; width: 150px;">
-                                            <label for="sector">
-                                                <g:message code="basicSchoolInformation.sector.independent.label" default="Independent"/>
-                                            </label>
-                                        </span>
-                                </span>
-                            </li>
-
-                            <li>
                             <span style="  width: 40px;">
                                     <span style=" display: inline-block; width: 150px;">
                                         <label for="specialisation">
@@ -286,7 +264,41 @@
                                           noSelection="['':'No Selection']"></g:select>
                             </li>
 
-                            <li>
+                        <li>
+                            <span style="  width: 40px;">
+                                <span style=" display: inline-block; width: 150px;">
+                                    <label for="sector">
+                                        <g:message code="basicSchoolInformation.sector.label" default="Sector"/>
+                                    </label>
+                                </span>
+
+                                <g:if test="${basicSchoolInformationInstance?.sector?.contains('PUBLIC')}">
+                                    <g:checkBox name="sector_p"  checked="true" />
+                                </g:if>
+                                <g:else>
+                                    <g:checkBox name="sector_p"  checked="false"   />
+                                </g:else>
+                                <span style=" display: inline-block; width: 150px;">
+                                    <label for="sector">
+                                        <g:message code="basicSchoolInformation.sector.public.label" default="Public"/>
+                                    </label>
+                                </span>
+
+                                <g:if test="${basicSchoolInformationInstance?.sector?.contains('INDEPENDENT')}">
+                                    <g:checkBox name="sector_i" checked="true" />
+                                </g:if>
+                                <g:else>
+                                    <g:checkBox name="sector_i"  checked="false" />
+                                </g:else>
+                                <span style=" display: inline-block; width: 150px;">
+                                    <label for="sector">
+                                        <g:message code="basicSchoolInformation.sector.independent.label" default="Independent"/>
+                                    </label>
+                                </span>
+                            </span>
+                        </li>
+
+                        <li>
                                 <span style="  width: 40px;">
                                         <span style=" display: inline-block; width: 150px;">
                                             <label for="boardingSchool">
@@ -364,6 +376,8 @@
                             </li>
 
                         </ul>
+            </g:if>
+            </g:each>
                     </td>
                     <td>
                         <h3>Links to educational material</h3>
@@ -387,10 +401,11 @@
                 <g:hiddenField name="xspecialisation" value="${basicSchoolInformationInstance?.specialisation}" />
                 <g:hiddenField name="xquintile" value="${basicSchoolInformationInstance?.quintile}" />
                 <g:actionSubmit class="filterBy" action="filterBy" value="${message(code: 'default.button.filterBy.label', default: 'Filter')}" />
+                <g:actionSubmit class="reset" action="reset" value="${message(code: 'default.button.filterBy.label', default: 'Reset')}" />
             </fieldset>
         </g:form>
     </div>
-<!--http://localhost:8080/schoolsdata/basicSchoolInformation/filterBy?district=BUTTERWORTH&specialisation=&phase=&town_City=
+<!--http://localhost:8080/schoolsdata/BasicSchoolInformation/filterBy?district=BUTTERWORTH&specialisation=&phase=&town_City=
 --%>
 </body>
 </html>

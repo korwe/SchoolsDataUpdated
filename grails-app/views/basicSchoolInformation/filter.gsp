@@ -58,7 +58,7 @@
             <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 
                 <td>
-                    <g:link action="sabc" id="${basicSchoolInformationInstance.id}">${fieldValue(bean: basicSchoolInformationInstance, field: "schoolName")}
+                    <g:link action="basicSchoolInformation" id="${basicSchoolInformationInstance.id}">${fieldValue(bean: basicSchoolInformationInstance, field: "schoolName")}
                     </g:link></td>
 
                 <td>${fieldValue(bean: basicSchoolInformationInstance, field: "districtMunicipality")}</td>

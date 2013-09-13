@@ -7,8 +7,9 @@ class UrlMappings {
 			}
 		}
 
-		"/"(view:"/index")
-		"500"(view:'/error')
+		/*"/"(view:"/index")  */
+        "/"(controller:'basicSchoolInformation', action:"/filter")
+        "500"(view:'/error')
 
 	}
 }

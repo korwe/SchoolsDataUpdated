@@ -6,28 +6,43 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1f904091-9bc0-49d4-b52a-764c39228a97" name="Default" comment="demo for michael - some missing files">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/grails-app/views/basicSchoolInformation/edit.gsp" />
+    <list default="true" id="1f904091-9bc0-49d4-b52a-764c39228a97" name="Default" comment="">
+      <change type="MOVED" beforePath="$PROJECT_DIR$/grails-app/views/basicSchoolInformation/sabc.gsp" afterPath="$PROJECT_DIR$/grails-app/views/basicSchoolInformation/basicSchoolInformation.gsp" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/grails-app/views/basicSchoolInformation/sabc1.gsp" afterPath="$PROJECT_DIR$/grails-app/views/basicSchoolInformation/mappedSchoolInformation.gsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/controllers/schoolsdata/BasicSchoolInformationController.groovy" afterPath="$PROJECT_DIR$/grails-app/controllers/schoolsdata/BasicSchoolInformationController.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/conf/BuildConfig.groovy" afterPath="$PROJECT_DIR$/grails-app/conf/BuildConfig.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/conf/DataSource.groovy" afterPath="$PROJECT_DIR$/grails-app/conf/DataSource.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/conf/UrlMappings.groovy" afterPath="$PROJECT_DIR$/grails-app/conf/UrlMappings.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/views/basicSchoolInformation/filter.gsp" afterPath="$PROJECT_DIR$/grails-app/views/basicSchoolInformation/filter.gsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/views/layouts/main.gsp" afterPath="$PROJECT_DIR$/grails-app/views/layouts/main.gsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/schoolsdata-grailsPlugins.iml" afterPath="$PROJECT_DIR$/schoolsdata-grailsPlugins.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/stacktrace.log" afterPath="$PROJECT_DIR$/target/stacktrace.log" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="schoolsdata.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$USER_HOME$/.grails/" />
-    <file path="/Dummy.txt" changelist="1f904091-9bc0-49d4-b52a-764c39228a97" time="1378984242274" ignored="false" />
-    <file path="/main.gsp" changelist="1f904091-9bc0-49d4-b52a-764c39228a97" time="1378967394668" ignored="false" />
+    <file path="/Dummy.txt" changelist="1f904091-9bc0-49d4-b52a-764c39228a97" time="1378984256489" ignored="false" />
+    <file path="/main.gsp" changelist="1f904091-9bc0-49d4-b52a-764c39228a97" time="1379054776315" ignored="false" />
     <file path="/SchoolsDataController.groovy" changelist="1f904091-9bc0-49d4-b52a-764c39228a97" time="1378907140390" ignored="false" />
     <file path="/sabc.gsp" changelist="1f904091-9bc0-49d4-b52a-764c39228a97" time="1378966660988" ignored="false" />
-    <file path="/fragment.java" changelist="1f904091-9bc0-49d4-b52a-764c39228a97" time="1378968204545" ignored="false" />
+    <file path="/fragment.java" changelist="1f904091-9bc0-49d4-b52a-764c39228a97" time="1379053693609" ignored="false" />
     <file path="/main.css" changelist="1f904091-9bc0-49d4-b52a-764c39228a97" time="1378752356179" ignored="false" />
-    <file path="/a.dummy" changelist="1f904091-9bc0-49d4-b52a-764c39228a97" time="1378970973218" ignored="false" />
+    <file path="/a.dummy" changelist="1f904091-9bc0-49d4-b52a-764c39228a97" time="1378984511378" ignored="false" />
     <file path="/filter.gsp" changelist="1f904091-9bc0-49d4-b52a-764c39228a97" time="1378914922551" ignored="false" />
-    <file path="/Dummy.groovy" changelist="1f904091-9bc0-49d4-b52a-764c39228a97" time="1378898972093" ignored="false" />
+    <file path="/Dummy.groovy" changelist="1f904091-9bc0-49d4-b52a-764c39228a97" time="1379001322018" ignored="false" />
     <file path="/sabc1.gsp" changelist="1f904091-9bc0-49d4-b52a-764c39228a97" time="1378971631724" ignored="false" />
     <file path="/Aaa.groovy" changelist="1f904091-9bc0-49d4-b52a-764c39228a97" time="1378907201840" ignored="false" />
     <file path="/AaaController.groovy" changelist="1f904091-9bc0-49d4-b52a-764c39228a97" time="1378968328388" ignored="false" />
-    <file path="/UrlMappings.groovy" changelist="1f904091-9bc0-49d4-b52a-764c39228a97" time="1378915723140" ignored="false" />
+    <file path="/UrlMappings.groovy" changelist="1f904091-9bc0-49d4-b52a-764c39228a97" time="1378989522449" ignored="false" />
     <file path="$PROJECT_DIR$/test/unit/schoolsdata/BasicSchoolInformationTests.groovy" changelist="1f904091-9bc0-49d4-b52a-764c39228a97" time="1378966582923" ignored="false" />
     <file path="/*.regexp" changelist="1f904091-9bc0-49d4-b52a-764c39228a97" time="1378967151484" ignored="false" />
+    <file path="/BasicSchoolInformationController.groovy" changelist="1f904091-9bc0-49d4-b52a-764c39228a97" time="1379054659119" ignored="false" />
+    <file path="/SignupForm.groovy" changelist="1f904091-9bc0-49d4-b52a-764c39228a97" time="1378986572349" ignored="false" />
+    <file path="/LoginForm.groovy" changelist="1f904091-9bc0-49d4-b52a-764c39228a97" time="1378987629119" ignored="false" />
+    <file path="/mappedSchoolInformation.gsp" changelist="1f904091-9bc0-49d4-b52a-764c39228a97" time="1379054595081" ignored="false" />
+    <file path="/basicSchoolInformation.gsp" changelist="1f904091-9bc0-49d4-b52a-764c39228a97" time="1379003244243" ignored="false" />
+    <file path="/LoginFilters.groovy" changelist="1f904091-9bc0-49d4-b52a-764c39228a97" time="1379055283428" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,7 +103,118 @@
     <favorites_list name="schoolsdata" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="BasicSchoolInformationController.groovy" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/grails-app/controllers/schoolsdata/BasicSchoolInformationController.groovy">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="274" column="74" selection-start="11048" selection-end="11048" vertical-scroll-proportion="19.918367">
+              <folding>
+                <element signature="e#13437#13549#0" expanded="false" />
+                <element signature="e#13631#13779#0" expanded="false" />
+                <element signature="e#13797#14856#0" expanded="false" />
+                <element signature="e#14874#15044#0" expanded="false" />
+                <element signature="e#15062#15298#0" expanded="false" />
+                <element signature="e#15515#15998#0" expanded="false" />
+                <element signature="e#16016#16194#0" expanded="false" />
+                <element signature="e#16212#16398#0" expanded="false" />
+                <element signature="e#16633#16833#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="basicSchoolInformation.gsp" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/grails-app/views/basicSchoolInformation/basicSchoolInformation.gsp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="68" column="20" selection-start="3260" selection-end="3260" vertical-scroll-proportion="-5.617021">
+              <folding>
+                <marker date="1379054950000" expanded="true" signature="6777:6789" placeholder="{...}" />
+                <marker date="1379054950000" expanded="true" signature="8336:8348" placeholder="{...}" />
+                <marker date="1379054950000" expanded="true" signature="14567:14579" placeholder="{...}" />
+                <marker date="1379054950000" expanded="true" signature="20892:20904" placeholder="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="main.gsp" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/grails-app/views/layouts/main.gsp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="22" column="63" selection-start="1347" selection-end="1347" vertical-scroll-proportion="-13.75">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="filter.gsp" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/grails-app/views/basicSchoolInformation/filter.gsp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="LoginFilters.groovy" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/grails-app/conf/schoolsdata/LoginFilters.groovy">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="9" column="168" selection-start="383" selection-end="383" vertical-scroll-proportion="0.14851485">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="list.gsp" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/grails-app/views/basicSchoolInformation/list.gsp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="mappedSchoolInformation.gsp" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/grails-app/views/basicSchoolInformation/mappedSchoolInformation.gsp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="50" column="112" selection-start="2428" selection-end="2428" vertical-scroll-proportion="-0.82191783">
+              <folding>
+                <marker date="1379054950000" expanded="true" signature="7288:7300" placeholder="{...}" />
+                <marker date="1379054950000" expanded="true" signature="8847:8859" placeholder="{...}" />
+                <marker date="1379054950000" expanded="true" signature="15123:15135" placeholder="{...}" />
+                <marker date="1379054950000" expanded="true" signature="21987:21999" placeholder="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="UrlMappings.groovy" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/grails-app/conf/UrlMappings.groovy">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="12" column="29" selection-start="254" selection-end="254" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AuthenticationController.groovy" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/.grails/2.2.0/projects/schoolsdata/plugins/authentication-2.0.1/grails-app/controllers/com/grailsrocks/authentication/AuthenticationController.groovy">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="42" column="25" selection-start="1424" selection-end="1424" vertical-scroll-proportion="-5.2608695">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SignupForm.groovy" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/.grails/2.2.0/projects/schoolsdata/plugins/authentication-2.0.1/src/groovy/com/grailsrocks/authentication/SignupForm.groovy">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="15" column="7" selection-start="463" selection-end="511" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -107,30 +233,30 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/grails-app/conf/UrlMappings.groovy" />
-        <option value="$PROJECT_DIR$/grails-app/views/aaa/filter.gsp" />
-        <option value="$PROJECT_DIR$/grails-app/controllers/schoolsdata/AaaController.groovy" />
-        <option value="$PROJECT_DIR$/grails-app/views/aaa/sabc1.gsp" />
-        <option value="$PROJECT_DIR$/grails-app/views/aaa/sabc.gsp" />
-        <option value="$PROJECT_DIR$/grails-app/views/basicSchoolInformation/_form.gsp" />
-        <option value="$PROJECT_DIR$/grails-app/views/basicSchoolInformation/create.gsp" />
-        <option value="$PROJECT_DIR$/grails-app/views/basicSchoolInformation/edit.gsp" />
         <option value="$PROJECT_DIR$/grails-app/views/basicSchoolInformation/filter.gsp" />
         <option value="$PROJECT_DIR$/grails-app/views/basicSchoolInformation/list.gsp" />
         <option value="$PROJECT_DIR$/grails-app/views/basicSchoolInformation/show.gsp" />
-        <option value="$PROJECT_DIR$/grails-app/views/layouts/main.gsp" />
         <option value="$PROJECT_DIR$/test/unit/schoolsdata/BasicSchoolInformationControllerTests.groovy" />
-        <option value="$PROJECT_DIR$/grails-app/controllers/schoolsdata/BasicSchoolInformationController.groovy" />
         <option value="$PROJECT_DIR$/grails-app/views/basicSchoolInformation/sabc1.gsp" />
         <option value="$PROJECT_DIR$/grails-app/views/basicSchoolInformation/sabc.gsp" />
+        <option value="$PROJECT_DIR$/grails-app/conf/DataSource.groovy" />
+        <option value="$PROJECT_DIR$/grails-app/conf/BuildConfig.groovy" />
+        <option value="$USER_HOME$/.grails/2.2.0/projects/schoolsdata/plugins/authentication-2.0.1/src/groovy/com/grailsrocks/authentication/SignupForm.groovy" />
+        <option value="$USER_HOME$/.grails/2.2.0/projects/schoolsdata/plugins/authentication-2.0.1/src/groovy/com/grailsrocks/authentication/LoginForm.groovy" />
+        <option value="$PROJECT_DIR$/grails-app/conf/UrlMappings.groovy" />
+        <option value="$PROJECT_DIR$/grails-app/controllers/schoolsdata/BasicSchoolInformationController.groovy" />
+        <option value="$PROJECT_DIR$/grails-app/views/layouts/main.gsp" />
+        <option value="$PROJECT_DIR$/grails-app/views/basicSchoolInformation/mappedSchoolInformation.gsp" />
+        <option value="$PROJECT_DIR$/grails-app/views/basicSchoolInformation/basicSchoolInformation.gsp" />
+        <option value="$PROJECT_DIR$/grails-app/conf/schoolsdata/LoginFilters.groovy" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1543" />
-    <option name="y" value="-153" />
+    <option name="x" value="1440" />
+    <option name="y" value="-180" />
     <option name="width" value="1920" />
-    <option name="height" value="826" />
+    <option name="height" value="1080" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -146,7 +272,7 @@
     <option name="STATE" value="0" />
   </component>
   <component name="ProjectView">
-    <navigator proportions="" version="1" splitterProportion="0.5">
+    <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
       <flattenPackages />
       <showMembers />
       <showModules />
@@ -157,7 +283,13 @@
       <autoscrollFromSource />
       <sortByType />
     </navigator>
-    <panes />
+    <panes>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
+      <pane id="ProjectPane">
+        <subPane />
+      </pane>
+    </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="project.structure.last.edited" value="Artifacts" />
@@ -377,7 +509,11 @@
       <created>1378978997345</created>
       <updated>1378978997345</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="demo for michael - some missing files 2">
+      <created>1378984263681</created>
+      <updated>1378984263681</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -401,7 +537,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1543" y="-153" width="1920" height="826" extended-state="6" />
+    <frame x="1440" y="-180" width="1920" height="1080" extended-state="6" />
     <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32708332" sideWeight="0.4996321" order="7" side_tool="false" content_ui="tabs" />
@@ -411,22 +547,22 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33575884" sideWeight="0.50053364" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32708332" sideWeight="0.4994664" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.44475922" sideWeight="0.4996321" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21354167" sideWeight="0.4994664" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26770538" sideWeight="0.4996321" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="CDI" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32848233" sideWeight="0.4996321" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24919957" sideWeight="0.70997924" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33575884" sideWeight="0.4994664" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24919957" sideWeight="0.7492918" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.12606232" sideWeight="0.4994664" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32848233" sideWeight="0.4996321" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25155926" sideWeight="0.8800589" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32719547" sideWeight="0.4996321" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32083333" sideWeight="0.8800589" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Grails View" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.30256137" sideWeight="0.5552408" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Grails View" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.30256137" sideWeight="0.7864583" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32909605" sideWeight="0.4996321" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24919957" sideWeight="0.67280453" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24919957" sideWeight="0.7492918" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -477,7 +613,7 @@
     <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="false" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="demo for michael - some missing files" />
+    <option name="LAST_COMMIT_MESSAGE" value="demo for michael - some missing files 2" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -494,6 +630,7 @@
     <MESSAGE value="test" />
     <MESSAGE value="demo for michael" />
     <MESSAGE value="demo for michael - some missing files" />
+    <MESSAGE value="demo for michael - some missing files 2" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -503,117 +640,127 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/grails-app/conf/BuildConfig.groovy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="61" column="39" selection-start="2355" selection-end="2355" vertical-scroll-proportion="-11.346154">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grails-app/conf/DataSource.groovy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="30" selection-start="599" selection-end="599" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.grails/2.2.0/projects/schoolsdata/plugins/authentication-2.0.1/src/groovy/com/grailsrocks/authentication/LoginForm.groovy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="19" selection-start="301" selection-end="301" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.grails/2.2.0/projects/schoolsdata/plugins/authentication-2.0.1/grails-app/controllers/com/grailsrocks/authentication/AuthenticationController.groovy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="42" column="25" selection-start="1424" selection-end="1424" vertical-scroll-proportion="-5.2608695">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.grails/2.2.0/projects/schoolsdata/plugins/authentication-2.0.1/src/groovy/com/grailsrocks/authentication/SignupForm.groovy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="7" selection-start="463" selection-end="511" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/grails-app/conf/UrlMappings.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="8" selection-start="133" selection-end="133" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/views/basicSchoolInformation/_form.gsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="0" selection-start="56" selection-end="56" vertical-scroll-proportion="-0.14705883">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/views/basicSchoolInformation/create.gsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="25" selection-start="361" selection-end="361" vertical-scroll-proportion="-1.3235294">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/views/basicSchoolInformation/edit.gsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="33" selection-start="1179" selection-end="1179" vertical-scroll-proportion="-1.637255">
+        <state line="12" column="29" selection-start="254" selection-end="254" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/grails-app/views/basicSchoolInformation/list.gsp">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="60" column="59" selection-start="3003" selection-end="3003" vertical-scroll-proportion="-8.284314">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/views/basicSchoolInformation/show.gsp">
+    <entry file="jar:///Developer/grails-2.2.0/lib/org.springframework/spring-web/jars/spring-web-3.1.2.RELEASE.jar!/org/springframework/web/context/request/RequestContextHolder.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="362" column="83" selection-start="18238" selection-end="18238" vertical-scroll-proportion="-52.69608">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/views/layouts/main.gsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="56" selection-start="1340" selection-end="1340" vertical-scroll-proportion="-13.75">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web-app/css/errors.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="29" selection-start="497" selection-end="497" vertical-scroll-proportion="0.33333334">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web-app/css/main.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="56" selection-start="338" selection-end="338" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/unit/schoolsdata/BasicSchoolInformationControllerTests.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="149" column="65" selection-start="4247" selection-end="4269" vertical-scroll-proportion="-8.948718">
+        <state line="21" column="76" selection-start="1164" selection-end="1164" vertical-scroll-proportion="0.57974136">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/grails-app/views/basicSchoolInformation/filter.gsp">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="77" column="51" selection-start="3734" selection-end="3734" vertical-scroll-proportion="-3.372549">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grails-app/views/basicSchoolInformation/edit.gsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="36" column="143" selection-start="1942" selection-end="1942" vertical-scroll-proportion="0.63955635">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/grails-app/controllers/schoolsdata/BasicSchoolInformationController.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="225" column="0" selection-start="8704" selection-end="8704" vertical-scroll-proportion="-30.76923">
+        <state line="274" column="74" selection-start="11048" selection-end="11048" vertical-scroll-proportion="19.918367">
+          <folding>
+            <element signature="e#13437#13549#0" expanded="false" />
+            <element signature="e#13631#13779#0" expanded="false" />
+            <element signature="e#13797#14856#0" expanded="false" />
+            <element signature="e#14874#15044#0" expanded="false" />
+            <element signature="e#15062#15298#0" expanded="false" />
+            <element signature="e#15515#15998#0" expanded="false" />
+            <element signature="e#16016#16194#0" expanded="false" />
+            <element signature="e#16212#16398#0" expanded="false" />
+            <element signature="e#16633#16833#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grails-app/views/layouts/main.gsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="22" column="63" selection-start="1347" selection-end="1347" vertical-scroll-proportion="-13.75">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/domain/schoolsdata/BasicSchoolInformation.groovy">
+    <entry file="file://$PROJECT_DIR$/grails-app/views/basicSchoolInformation/mappedSchoolInformation.gsp">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="6" selection-start="27" selection-end="27" vertical-scroll-proportion="0.3">
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="org.jetbrains.plugins.grails.perspectives.DomainClassesRelationsEditorProvider">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/conf/DataSource.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
+        <state line="50" column="112" selection-start="2428" selection-end="2428" vertical-scroll-proportion="-0.82191783">
+          <folding>
+            <marker date="1379054950000" expanded="true" signature="7288:7300" placeholder="{...}" />
+            <marker date="1379054950000" expanded="true" signature="8847:8859" placeholder="{...}" />
+            <marker date="1379054950000" expanded="true" signature="15123:15135" placeholder="{...}" />
+            <marker date="1379054950000" expanded="true" signature="21987:21999" placeholder="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/views/basicSchoolInformation/sabc1.gsp">
+    <entry file="file://$PROJECT_DIR$/grails-app/views/basicSchoolInformation/basicSchoolInformation.gsp">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="50" column="112" selection-start="2417" selection-end="2417" vertical-scroll-proportion="-1.117647">
-          <folding />
+        <state line="68" column="20" selection-start="3260" selection-end="3260" vertical-scroll-proportion="-5.617021">
+          <folding>
+            <marker date="1379054950000" expanded="true" signature="6777:6789" placeholder="{...}" />
+            <marker date="1379054950000" expanded="true" signature="8336:8348" placeholder="{...}" />
+            <marker date="1379054950000" expanded="true" signature="14567:14579" placeholder="{...}" />
+            <marker date="1379054950000" expanded="true" signature="20892:20904" placeholder="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/views/basicSchoolInformation/sabc.gsp">
+    <entry file="file://$PROJECT_DIR$/grails-app/conf/schoolsdata/LoginFilters.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="54" column="129" selection-start="2466" selection-end="2466" vertical-scroll-proportion="0.119284295">
+        <state line="9" column="168" selection-start="383" selection-end="383" vertical-scroll-proportion="0.14851485">
           <folding />
         </state>
       </provider>
@@ -625,7 +772,7 @@
         <entry key="schoolsdata">
           <value>
             <GrailsSettings>
-              <option name="buildConfigCrc" value="598379447" />
+              <option name="buildConfigCrc" value="938724369" />
               <option name="pluginDependenciesCrc" value="-1218632913" />
               <option name="properties">
                 <map>

@@ -20,7 +20,7 @@
 
     <body onload="initialize()" onunload="GUnload()">
 		<div id="grailsLogo" role="banner">
-            <a href="/schoolsdata/basicSchoolInformation/reset">
+            <a href="/schoolsdata/basicSchoolInformation/filter">
                 <img src="${resource(dir: 'images', file: 'sabc.png')}" alt="SABC"/> </a>
         <div style="float:right;display:block;">
             <img src="${resource(dir: 'images', file: 'socl2.png')}" alt="social"/></div>
