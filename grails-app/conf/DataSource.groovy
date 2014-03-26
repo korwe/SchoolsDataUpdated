@@ -55,8 +55,9 @@ environments {
             dbCreate = "update"
             driverClassName = "com.mysql.jdbc.Driver"
             url = "jdbc:mysql://localhost/schoolsData"
-            username = "metrorailuser"
-            password = "metrorailpassword"
+            username = "root"
+            password = "korwe"
+            logSql = false
         }
 
 /*

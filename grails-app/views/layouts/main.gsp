@@ -26,7 +26,7 @@
             <img src="${resource(dir: 'images', file: 'socl2.png')}" alt="social"/></div>
         </div>
 		<g:layoutBody/>
-		<div class="footer" role="contentinfo">(c) SABC 2013</div>
+		<div class="footer" role="contentinfo">(c) SABC xxxx</div>
 		<div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
 		<g:javascript library="application"/>
 		<r:layoutResources />

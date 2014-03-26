@@ -1,21 +1,26 @@
 package schoolsdata
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.dao.DataIntegrityViolationException
+import grails.converters.*;
 
 class BasicSchoolInformationController {
+    private Logger Log = LoggerFactory.getLogger(this.getClass());
 
-    def authenticationService
+    //def authenticationService
     //The first element in the list is the search parameter
-    def pageListSize = 301
+    def pageListSize = 300
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     BasicSchoolInformationController() {
-        session["provinces"] = getProvinces().result
-        session["districtMunicipality"] = getMunicipalities().sort().result
-        session["specialisation"] = getSpecialisations().sort().result
-        session["quintile"] = getQuintiles().sort().result
-        session["pageListSize"] = pageListSize
+        log.info(" BasicSchoolInformationController ctor")
+        if (session["provinces"] == null ) session["provinces"] = getProvinces().result
+        if (session["districtMunicipality"] == null ) session["districtMunicipality"] = getMunicipalities().sort().result
+        if (session["specialisation"] == null ) session["specialisation"] = getSpecialisations().sort().result
+        if (session["quintile"] == null ) session["quintile"] = getQuintiles().sort().result
+        if (session["pageListSize"] == null ) session["pageListSize"] = pageListSize
     }
 
     def reset() {
@@ -36,30 +41,47 @@ class BasicSchoolInformationController {
 
         [basicSchoolInformationInstance: basicSchoolInformationInstance]
     }
+
     def index() {
         redirect(action: "filter", params: params)
     }
 
     def getQuintiles() {
+        log.info(" BasicSchoolInformationController getQuintiles")
         def result = BasicSchoolInformation.executeQuery("select distinct a.quintile from BasicSchoolInformation a  order by a.quintile asc")
         [ result: result ]
     }
 
     def getProvinces() {
+        log.info(" BasicSchoolInformationController getProvinces")
         def result = BasicSchoolInformation.executeQuery("select distinct a.province from BasicSchoolInformation a  order by a.province asc")
         [ result: result ]
     }
 
     def getMunicipalities() {
+        log.info(" BasicSchoolInformationController getMunicipalities")
         def result = BasicSchoolInformation.executeQuery("select distinct a.districtMunicipality from BasicSchoolInformation a  order by a.districtMunicipality asc")
         [ result: result ]
     }
 
-    def getSpecialisations() {
-        def result = BasicSchoolInformation.executeQuery("select distinct a.specialisation from BasicSchoolInformation a  order by a.specialisation asc")
+    def getMunicipalitiesByProvince(province) {
+        log.info(" BasicSchoolInformationController getMunicipalitiesByProvince " + province)
+        def result = BasicSchoolInformation.executeQuery("select distinct a.districtMunicipality from BasicSchoolInformation a where province=\'"+province+"\' order by a.districtMunicipality asc")
         [ result: result ]
     }
 
+
+    def getTownsByMunicipalities(districtMunicipality) {
+        log.info(" BasicSchoolInformationController getTownsByMunicipalities" +districtMunicipality )
+        def result = BasicSchoolInformation.executeQuery("select distinct a.town_City from BasicSchoolInformation a  where districtMunicipality=\'"+districtMunicipality+"\' order by a.town_City asc")
+        [ result: result ]
+    }
+
+    def getSpecialisations() {
+        log.info(" BasicSchoolInformationController getSpecialisations")
+        def result = BasicSchoolInformation.executeQuery("select distinct a.specialisation from BasicSchoolInformation a  order by a.specialisation asc")
+        [ result: result ]
+    }
 
     def list(Integer max) {
         params.max = Math.min(max ?: 10, 100)
@@ -146,51 +168,41 @@ class BasicSchoolInformationController {
             redirect(action: "list")
         }
         catch (DataIntegrityViolationException e) {
+            Log.error("DataIntegrityViolationException", e)
             flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'basicSchoolInformation.label', default: 'BasicSchoolInformation'), id])
             redirect(action: "show", id: id)
         }
     }
 
     def filter(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        params.offset = params?.offset ?: 0
-        def offset = params.int('offset')
-        def maxi = params.int('max') + offset
-
-        def filterResults
-        def count
+        def ufr
         if (session["filterResults"] == null)  {
-            def ufr = BasicSchoolInformation.list()
+            ufr = BasicSchoolInformation.list()
+            Collections.shuffle(ufr)
 
             def basicSchoolInformationInstanceSearchParams = new BasicSchoolInformation()
             ufr.add(0, basicSchoolInformationInstanceSearchParams)
 
             session["filterResults"] = ufr
-
-            session["filterResultsCount"] = BasicSchoolInformation.count() + 1
-            count = session["filterResultsCount"]
-
-            maxi = (maxi >= count) ? (count - 1) : maxi
-            if (maxi >= 0) {
-                filterResults =  ufr[offset .. maxi ]
-            }
-            else {
-                filterResults = null
-            }
         }
         else {
-            def ufr = session["filterResults"]
-            count = session["filterResultsCount"]
-            maxi = (maxi >= count) ? (count - 1) : maxi
-            if (maxi >= 0) {
-                filterResults =  ufr[offset .. maxi ]
-            }
-            else {
-                filterResults = null
-            }
+            ufr = session["filterResults"]
         }
 
-        render(view: 'mappedSchoolInformation', model: ['basicSchoolInformationInstanceList': filterResults, 'basicSchoolInformationInstanceTotal': count, 'dataSize': count])
+        def totalSchools = ufr.size()//includes zeroth
+
+        params.max = max ?: pageListSize
+        params.offset = params?.offset ?: 0
+        def offset = params.int('offset')
+        def maxi = params.int('max') + offset
+
+        maxi = (maxi >= totalSchools) ? (totalSchools - 1) : maxi
+        def filterResults =  ufr[offset .. maxi ]
+
+        def count = filterResults.size()//includes zeroth
+
+        render(view: 'mappedSchoolInformation',
+                model: ['basicSchoolInformationInstanceList': filterResults, 'basicSchoolInformationInstanceTotal': count, 'totalSchools': totalSchools])
     }
 
     //This method strips quotes from the beginning and end of strings. Partially quoted strings are assumed to be
@@ -218,19 +230,19 @@ class BasicSchoolInformationController {
     def filterBy(Integer max) {
         def   filterResults   = filterSchools(params)
         session["filterResults"] = filterResults
-        def count = filterResults.size()
-        session["filterResultsCount"] = count
-        if (count ==0 ) {
-            render(view: 'mappedSchoolInformation', model: ['basicSchoolInformationInstanceList': null, 'basicSchoolInformationInstanceTotal': count, 'dataSize': count, 'pageListSize': 0])
+        def totalSchools = filterResults.size()
+        if (totalSchools == 0 ) {
+            render(view: 'mappedSchoolInformation', model: ['basicSchoolInformationInstanceList': null, 'basicSchoolInformationInstanceTotal': 0, 'totalSchools': totalSchools])
             return
         }
 
         def offset = params.int('offset') ?: 0
         def maxi = params.int('max') ?: pageListSize
         maxi = maxi + offset
-        maxi = (maxi >= count) ? (count - 1) : maxi
+        maxi = (maxi >= totalSchools) ? (totalSchools - 1) : maxi
         def newFilterResults =  filterResults[offset .. maxi]
-        render(view: 'mappedSchoolInformation', model: ['basicSchoolInformationInstanceList': newFilterResults, 'basicSchoolInformationInstanceTotal': count, 'dataSize': count, 'pageListSize': pageListSize])
+        def count = newFilterResults.size()
+        render(template: 'iframe.gsp', view: 'mappedSchoolInformation', model: ['basicSchoolInformationInstanceList': newFilterResults, 'basicSchoolInformationInstanceTotal': count, 'totalSchools': totalSchools])
     }
 
     def filterSchools(params) {
@@ -249,7 +261,6 @@ class BasicSchoolInformationController {
         def phase_s = params?.phase_s
         def phase_f = params?.phase_f
         def phase = (phase_c == 'on') || (phase_i == 'on') || (phase_p =='on') || (phase_s == 'on') || (phase_f=='on')
-
 
         def specialisation =  stripStringQuotes(params?.specialisation)
         def cspecialisation = "${specialisation}"
@@ -350,18 +361,15 @@ class BasicSchoolInformationController {
                             message += " phase: intermediate"
                         }
 
-
                         if (phase_p) {
                             ilike("phase", 'PRIMARY SCHOOL')
                             message += " phase: primary"
                         }
 
-
                         if (phase_s) {
                             ilike("phase", 'SECONDARY SCHOOL')
                             message += " phase: secondary"
                         }
-
 
                         if (phase_f) {
                             ilike("phase", 'FINISHING SCHOOL')
@@ -441,6 +449,63 @@ class BasicSchoolInformationController {
         return results
     }
 
-    def map() {
+    def testLatLong(){
+        def edge = params.edge
+        def list = JSON.parse(edge); // Parse the JSON String
+
+        def latitudeMin=list.latitudeMin
+        def longitudeMin=list.longitudeMin
+        def latitudeMax=list.latitudeMax
+        def longitudeMax=list.longitudeMax
+        def zm=list.zoom
+
+        log.info("latMin " +latitudeMin+" lamMax=" + latitudeMax + " longitudeMin=" + longitudeMin+ " longitudeMax=" + longitudeMax)
+        def filterResults = new ArrayList<BasicSchoolInformationController>()
+        def count
+        def nextList = pageListSize + 1
+        if (session["filterResults"] == null) {
+            return filterResults;
+        }
+        def ufr = session["filterResults"]
+        def totalSchools = ufr.size()
+        def int nLog = 0
+        for (u in ufr) {
+            if (filterResults.size() == 0 ) {
+                filterResults.add(u)
+                continue
+            } else if (filterResults.size() > pageListSize ) {
+                log.debug("Finished adding")
+                break
+            }
+            nLog++
+            def lat = u.latitude
+            def lon = u.longitude
+            if ((nLog <= pageListSize) && (( ( lat < latitudeMax ) && ( lat > latitudeMin ) ) && ( (lon < longitudeMax ) && ( lon > longitudeMin ) ))) {
+                filterResults.add(u)
+                log.info("Adding "+nLog)
+            }
+            else {
+               // log.info("Missing "+(nLog-1))
+                while (nextList < totalSchools) {
+                    def u1 = ufr[nextList]
+                    def lat1 = u1.latitude
+                    def lon1 = u1.longitude
+                    if (((lat1<latitudeMax) && (lat1>latitudeMin)) && ((lon1<longitudeMax) && (lon1>longitudeMin)) ) {
+                        filterResults.add(u1)
+                        log.info("New "+nextList)
+                        nextList++
+                        break
+                    }
+                    nextList++
+                }
+            }
+        }
+        count = filterResults.size()
+        def midLat = (latitudeMax+latitudeMin) / 2.0
+        def midLong = (longitudeMax+longitudeMin) / 2.0
+        render(view: 'mappedSchoolInformation', model: ['basicSchoolInformationInstanceList': filterResults,
+                                                        'basicSchoolInformationInstanceTotal': count,
+                                                        'totalSchools': totalSchools, 'zoom':zm,
+                                                        'midLat':midLat, 'midLong':midLong])
     }
 }
