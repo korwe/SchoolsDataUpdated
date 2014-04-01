@@ -42,9 +42,13 @@ environments {
             logSql = false
             pooled = true
             properties {
-                maxActive = -1
-                minEvictableIdleTimeMillis=1800000
-                timeBetweenEvictionRunsMillis=1800000
+                maxActive = 50
+                minIdle = 2
+                maxIdle = 20
+                maxAge = 600000
+                removeAbandoned = true
+                minEvictableIdleTimeMillis=60000
+                timeBetweenEvictionRunsMillis=30000
                 numTestsPerEvictionRun=3
                 testOnBorrow=true
                 testWhileIdle=true
