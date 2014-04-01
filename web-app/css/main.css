@@ -414,6 +414,13 @@ table {
 	margin-bottom: 1em;
 }
 
+#main_table {
+    border-top: 1px solid #DFDFDF;
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1em 0em 1em 0em;
+}
+
 tr {
 	border: 0;
 }

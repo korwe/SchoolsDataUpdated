@@ -4,6 +4,11 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.dao.DataIntegrityViolationException
 import grails.converters.*;
+/*
+* author: david DOT hislop AT korwe DOT com
+* 26/3/2014
+* version 1.1
+*/
 
 class BasicSchoolInformationController {
     private Logger Log = LoggerFactory.getLogger(this.getClass());
@@ -16,11 +21,11 @@ class BasicSchoolInformationController {
 
     BasicSchoolInformationController() {
         log.info(" BasicSchoolInformationController ctor")
-        if (session["provinces"] == null ) session["provinces"] = getProvinces().result
-        if (session["districtMunicipality"] == null ) session["districtMunicipality"] = getMunicipalities().sort().result
-        if (session["specialisation"] == null ) session["specialisation"] = getSpecialisations().sort().result
-        if (session["quintile"] == null ) session["quintile"] = getQuintiles().sort().result
-        if (session["pageListSize"] == null ) session["pageListSize"] = pageListSize
+        if (session["provinces"] == null) session["provinces"] = getProvinces().result
+        if (session["districtMunicipality"] == null) session["districtMunicipality"] = getMunicipalities().sort().result
+        if (session["specialisation"] == null) session["specialisation"] = getSpecialisations().sort().result
+        if (session["quintile"] == null) session["quintile"] = getQuintiles().sort().result
+        if (session["pageListSize"] == null) session["pageListSize"] = pageListSize
     }
 
     def reset() {
@@ -49,38 +54,38 @@ class BasicSchoolInformationController {
     def getQuintiles() {
         log.info(" BasicSchoolInformationController getQuintiles")
         def result = BasicSchoolInformation.executeQuery("select distinct a.quintile from BasicSchoolInformation a  order by a.quintile asc")
-        [ result: result ]
+        [result: result]
     }
 
     def getProvinces() {
         log.info(" BasicSchoolInformationController getProvinces")
         def result = BasicSchoolInformation.executeQuery("select distinct a.province from BasicSchoolInformation a  order by a.province asc")
-        [ result: result ]
+        [result: result]
     }
 
     def getMunicipalities() {
         log.info(" BasicSchoolInformationController getMunicipalities")
         def result = BasicSchoolInformation.executeQuery("select distinct a.districtMunicipality from BasicSchoolInformation a  order by a.districtMunicipality asc")
-        [ result: result ]
+        [result: result]
     }
 
     def getMunicipalitiesByProvince(province) {
         log.info(" BasicSchoolInformationController getMunicipalitiesByProvince " + province)
-        def result = BasicSchoolInformation.executeQuery("select distinct a.districtMunicipality from BasicSchoolInformation a where province=\'"+province+"\' order by a.districtMunicipality asc")
-        [ result: result ]
+        def result = BasicSchoolInformation.executeQuery("select distinct a.districtMunicipality from BasicSchoolInformation a where province=\'" + province + "\' order by a.districtMunicipality asc")
+        [result: result]
     }
 
 
     def getTownsByMunicipalities(districtMunicipality) {
-        log.info(" BasicSchoolInformationController getTownsByMunicipalities" +districtMunicipality )
-        def result = BasicSchoolInformation.executeQuery("select distinct a.town_City from BasicSchoolInformation a  where districtMunicipality=\'"+districtMunicipality+"\' order by a.town_City asc")
-        [ result: result ]
+        log.info(" BasicSchoolInformationController getTownsByMunicipalities" + districtMunicipality)
+        def result = BasicSchoolInformation.executeQuery("select distinct a.town_City from BasicSchoolInformation a  where districtMunicipality=\'" + districtMunicipality + "\' order by a.town_City asc")
+        [result: result]
     }
 
     def getSpecialisations() {
         log.info(" BasicSchoolInformationController getSpecialisations")
         def result = BasicSchoolInformation.executeQuery("select distinct a.specialisation from BasicSchoolInformation a  order by a.specialisation asc")
-        [ result: result ]
+        [result: result]
     }
 
     def list(Integer max) {
@@ -176,7 +181,7 @@ class BasicSchoolInformationController {
 
     def filter(Integer max) {
         def ufr
-        if (session["filterResults"] == null)  {
+        if (session["filterResults"] == null) {
             ufr = BasicSchoolInformation.list()
             Collections.shuffle(ufr)
 
@@ -184,8 +189,7 @@ class BasicSchoolInformationController {
             ufr.add(0, basicSchoolInformationInstanceSearchParams)
 
             session["filterResults"] = ufr
-        }
-        else {
+        } else {
             ufr = session["filterResults"]
         }
 
@@ -197,7 +201,7 @@ class BasicSchoolInformationController {
         def maxi = params.int('max') + offset
 
         maxi = (maxi >= totalSchools) ? (totalSchools - 1) : maxi
-        def filterResults =  ufr[offset .. maxi ]
+        def filterResults = ufr[offset..maxi]
 
         def count = filterResults.size()//includes zeroth
 
@@ -210,7 +214,7 @@ class BasicSchoolInformationController {
     //If the string is of length zero or null it returns null
     //If it has no quotes (on both sides) it returns the string
     static String stripStringQuotes(String s) {
-        if (s==null) {
+        if (s == null) {
             return null
         }
 
@@ -219,19 +223,18 @@ class BasicSchoolInformationController {
             return null
         }
 
-        if (s[0]=='' && s[l-1]=='') {
-            return s.substring(1,l-1)
-        }  else
-        {
+        if (s[0] == '' && s[l - 1] == '') {
+            return s.substring(1, l - 1)
+        } else {
             return s
         }
     }
 
     def filterBy(Integer max) {
-        def   filterResults   = filterSchools(params)
+        def filterResults = filterSchools(params)
         session["filterResults"] = filterResults
         def totalSchools = filterResults.size()
-        if (totalSchools == 0 ) {
+        if (totalSchools == 0) {
             render(view: 'mappedSchoolInformation', model: ['basicSchoolInformationInstanceList': null, 'basicSchoolInformationInstanceTotal': 0, 'totalSchools': totalSchools])
             return
         }
@@ -240,19 +243,19 @@ class BasicSchoolInformationController {
         def maxi = params.int('max') ?: pageListSize
         maxi = maxi + offset
         maxi = (maxi >= totalSchools) ? (totalSchools - 1) : maxi
-        def newFilterResults =  filterResults[offset .. maxi]
+        def newFilterResults = filterResults[offset..maxi]
         def count = newFilterResults.size()
         render(template: 'iframe.gsp', view: 'mappedSchoolInformation', model: ['basicSchoolInformationInstanceList': newFilterResults, 'basicSchoolInformationInstanceTotal': count, 'totalSchools': totalSchools])
     }
 
     def filterSchools(params) {
-        def districtMunicipality =  stripStringQuotes(params?.districtMunicipality)
+        def districtMunicipality = stripStringQuotes(params?.districtMunicipality)
         def cdistrictMunicipality = "${districtMunicipality}"
 
-        def province =  stripStringQuotes(params?.province)
+        def province = stripStringQuotes(params?.province)
         def cprovince = "${province}"
 
-        def town_City =  stripStringQuotes(params?.town_City)
+        def town_City = stripStringQuotes(params?.town_City)
         def ctown_City = "${town_City}"
 
         def phase_c = params?.phase_c
@@ -260,25 +263,25 @@ class BasicSchoolInformationController {
         def phase_p = params?.phase_p
         def phase_s = params?.phase_s
         def phase_f = params?.phase_f
-        def phase = (phase_c == 'on') || (phase_i == 'on') || (phase_p =='on') || (phase_s == 'on') || (phase_f=='on')
+        def phase = (phase_c == 'on') || (phase_i == 'on') || (phase_p == 'on') || (phase_s == 'on') || (phase_f == 'on')
 
-        def specialisation =  stripStringQuotes(params?.specialisation)
+        def specialisation = stripStringQuotes(params?.specialisation)
         def cspecialisation = "${specialisation}"
 
-        def schoolName =  stripStringQuotes(params?.schoolName)
+        def schoolName = stripStringQuotes(params?.schoolName)
         def cschoolName = "${schoolName}"
 
         def sector_i = params?.sector_i
         def sector_p = params?.sector_p
-        def sector = (sector_i=='on') || (sector_p=='on')
+        def sector = (sector_i == 'on') || (sector_p == 'on')
 
-        def section21 =  stripStringQuotes(params?.section21)
+        def section21 = stripStringQuotes(params?.section21)
 
-        def noFeeSchool =  stripStringQuotes(params?.noFeeSchool)
+        def noFeeSchool = stripStringQuotes(params?.noFeeSchool)
 
-        def boardingSchool =  stripStringQuotes(params?.boardingSchool)
+        def boardingSchool = stripStringQuotes(params?.boardingSchool)
 
-        def quintile =  stripStringQuotes(params?.quintile)
+        def quintile = stripStringQuotes(params?.quintile)
         def cquintile = "${quintile}"
 
         def message = "Search: "
@@ -291,24 +294,24 @@ class BasicSchoolInformationController {
             basicSchoolInformationInstanceSearchParams.phase = "COMBINED SCHOOL"
         }
         if (phase_i) {
-            def seperator =''
-            if (basicSchoolInformationInstanceSearchParams.phase)   seperator = '|'
-            basicSchoolInformationInstanceSearchParams.phase += seperator+"INTERMEDIATE SCHOOL"
+            def seperator = ''
+            if (basicSchoolInformationInstanceSearchParams.phase) seperator = '|'
+            basicSchoolInformationInstanceSearchParams.phase += seperator + "INTERMEDIATE SCHOOL"
         }
         if (phase_p) {
-            def seperator =''
-            if (basicSchoolInformationInstanceSearchParams.phase)   seperator = '|'
-            basicSchoolInformationInstanceSearchParams.phase += seperator+"PRIMARY SCHOOL"
+            def seperator = ''
+            if (basicSchoolInformationInstanceSearchParams.phase) seperator = '|'
+            basicSchoolInformationInstanceSearchParams.phase += seperator + "PRIMARY SCHOOL"
         }
         if (phase_f) {
-            def seperator =''
-            if (basicSchoolInformationInstanceSearchParams.phase)   seperator = '|'
-            basicSchoolInformationInstanceSearchParams.phase += seperator+ "FINISHING SCHOOL"
+            def seperator = ''
+            if (basicSchoolInformationInstanceSearchParams.phase) seperator = '|'
+            basicSchoolInformationInstanceSearchParams.phase += seperator + "FINISHING SCHOOL"
         }
         if (phase_s) {
-            def seperator =''
-            if (basicSchoolInformationInstanceSearchParams.phase)   seperator = '|'
-            basicSchoolInformationInstanceSearchParams.phase += seperator+ "SECONDARY SCHOOL"
+            def seperator = ''
+            if (basicSchoolInformationInstanceSearchParams.phase) seperator = '|'
+            basicSchoolInformationInstanceSearchParams.phase += seperator + "SECONDARY SCHOOL"
         }
         basicSchoolInformationInstanceSearchParams.town_City = town_City
         basicSchoolInformationInstanceSearchParams.specialisation = specialisation
@@ -319,9 +322,9 @@ class BasicSchoolInformationController {
         }
 
         if (sector_p) {
-            def seperator =''
-            if (basicSchoolInformationInstanceSearchParams.sector)   seperator = '|'
-            basicSchoolInformationInstanceSearchParams.sector += seperator+ "PUBLIC"
+            def seperator = ''
+            if (basicSchoolInformationInstanceSearchParams.sector) seperator = '|'
+            basicSchoolInformationInstanceSearchParams.sector += seperator + "PUBLIC"
         }
 
         if (section21 == 'on') {
@@ -444,22 +447,22 @@ class BasicSchoolInformationController {
                 }
             }
         }
-        session["message"]= message
-        results.add(0,basicSchoolInformationInstanceSearchParams)
+        session["message"] = message
+        results.add(0, basicSchoolInformationInstanceSearchParams)
         return results
     }
 
-    def testLatLong(){
+    def testLatLong() {
         def edge = params.edge
         def list = JSON.parse(edge); // Parse the JSON String
 
-        def latitudeMin=list.latitudeMin
-        def longitudeMin=list.longitudeMin
-        def latitudeMax=list.latitudeMax
-        def longitudeMax=list.longitudeMax
-        def zm=list.zoom
+        def latitudeMin = list.latitudeMin
+        def longitudeMin = list.longitudeMin
+        def latitudeMax = list.latitudeMax
+        def longitudeMax = list.longitudeMax
+        def zm = list.zoom
 
-        log.info("latMin " +latitudeMin+" lamMax=" + latitudeMax + " longitudeMin=" + longitudeMin+ " longitudeMax=" + longitudeMax)
+        //log.info("latMin " + latitudeMin + " lamMax=" + latitudeMax + " longitudeMin=" + longitudeMin + " longitudeMax=" + longitudeMax)
         def filterResults = new ArrayList<BasicSchoolInformationController>()
         def count
         def nextList = pageListSize + 1
@@ -470,29 +473,28 @@ class BasicSchoolInformationController {
         def totalSchools = ufr.size()
         def int nLog = 0
         for (u in ufr) {
-            if (filterResults.size() == 0 ) {
+            if (filterResults.size() == 0) {
                 filterResults.add(u)
                 continue
-            } else if (filterResults.size() > pageListSize ) {
-                log.debug("Finished adding")
+            } else if (filterResults.size() > pageListSize) {
+                //log.debug("Finished adding")
                 break
             }
             nLog++
             def lat = u.latitude
             def lon = u.longitude
-            if ((nLog <= pageListSize) && (( ( lat < latitudeMax ) && ( lat > latitudeMin ) ) && ( (lon < longitudeMax ) && ( lon > longitudeMin ) ))) {
+            if ((nLog <= pageListSize) && (((lat < latitudeMax) && (lat > latitudeMin)) && ((lon < longitudeMax) && (lon > longitudeMin)))) {
                 filterResults.add(u)
-                log.info("Adding "+nLog)
-            }
-            else {
-               // log.info("Missing "+(nLog-1))
+                //log.info("Adding " + nLog)
+            } else {
+                // log.info("Missing "+(nLog-1))
                 while (nextList < totalSchools) {
                     def u1 = ufr[nextList]
                     def lat1 = u1.latitude
                     def lon1 = u1.longitude
-                    if (((lat1<latitudeMax) && (lat1>latitudeMin)) && ((lon1<longitudeMax) && (lon1>longitudeMin)) ) {
+                    if (((lat1 < latitudeMax) && (lat1 > latitudeMin)) && ((lon1 < longitudeMax) && (lon1 > longitudeMin))) {
                         filterResults.add(u1)
-                        log.info("New "+nextList)
+                        //log.info("New " + nextList)
                         nextList++
                         break
                     }
@@ -501,11 +503,11 @@ class BasicSchoolInformationController {
             }
         }
         count = filterResults.size()
-        def midLat = (latitudeMax+latitudeMin) / 2.0
-        def midLong = (longitudeMax+longitudeMin) / 2.0
-        render(view: 'mappedSchoolInformation', model: ['basicSchoolInformationInstanceList': filterResults,
+        def midLat = (latitudeMax + latitudeMin) / 2.0
+        def midLong = (longitudeMax + longitudeMin) / 2.0
+        render(view: 'mappedSchoolInformation', model: ['basicSchoolInformationInstanceList' : filterResults,
                                                         'basicSchoolInformationInstanceTotal': count,
-                                                        'totalSchools': totalSchools, 'zoom':zm,
-                                                        'midLat':midLat, 'midLong':midLong])
+                                                        'totalSchools'                       : totalSchools, 'zoom': zm,
+                                                        'midLat'                             : midLat, 'midLong': midLong])
     }
 }

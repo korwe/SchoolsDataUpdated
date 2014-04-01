@@ -1,5 +1,10 @@
 package schoolsdata
 
+/*
+* author: david DOT hislop AT korwe DOT com
+* 26/3/2014
+* version 1.1
+*/
 class BasicSchoolInformation {
 
     static constraints = {

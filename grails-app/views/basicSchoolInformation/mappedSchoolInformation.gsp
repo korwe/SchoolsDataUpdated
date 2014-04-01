@@ -1,8 +1,12 @@
 <%@ page import="schoolsdata.BasicSchoolInformationController; schoolsdata.BasicSchoolInformation" %>
 <!DOCTYPE html>
-
 <html>
 <head>
+<%--
+    * author: info AT korwe DOT com
+    * 26/3/2014
+    * version 1.1
+--%>
     <meta name="layout" content="iframe">
     <g:set var="entityName" value="${message(code: 'basicSchoolInformation.label', default: 'Basic School Info')}"/>
     <title><g:message code="basicSchoolInformation.label" args="[entityName]"/></title>
@@ -10,6 +14,16 @@
     <%--<meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>--%>
 
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAVNqjynDsI3fhW-v4J_3OW-ocbG2C7CDE&sensor=false">
+    </script>
+        <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-38983688-2', 'korwe.com');
+        ga('send', 'pageview');
+
     </script>
 
     <script type="text/javascript">
@@ -38,9 +52,13 @@
 
                 google.maps.event.addListener(marker, 'click', (function (marker, schoolIndex) {
                     return function () {
-                        var txt = "<p>${basicSchoolInformationInstance?.schoolName}</p>";
-                        txt += "<p>contact: ${basicSchoolInformationInstance?.contactPerson}</p>";
-                        txt += "<p>tel: ${basicSchoolInformationInstance?.cellNo}</p>";
+                        var txt = "<p><b>${basicSchoolInformationInstance?.schoolName}</b></p>";
+                        txt += "<p>telephone: +${basicSchoolInformationInstance?.telephone}</p>";
+                        txt += "<p>phase: ${basicSchoolInformationInstance?.phase}</p>";
+                        txt += "<p>specialisation: ${basicSchoolInformationInstance?.specialisation}</p>";
+                        txt += "<p>quintile: Number ${basicSchoolInformationInstance?.quintile} of 5</p>";
+                        txt += "<p>scholars 2007-2013:</p> <p>&nbsp;&nbsp;${basicSchoolInformationInstance?.snap_Learners_2007} - ${basicSchoolInformationInstance?.snap_Learners_2008} - ${basicSchoolInformationInstance?.snap_Learners_2009} - ${basicSchoolInformationInstance?.snap_Learners_2010} - ${basicSchoolInformationInstance?.snap_Learners_2011} - ${basicSchoolInformationInstance?.snap_Learners_2012} - ${basicSchoolInformationInstance?.snap_Learners_2013}</p>";
+                        txt += "<p>teachers 2007-2013: </p> <p>&nbsp;&nbsp;${basicSchoolInformationInstance?.educator_Numbers_2007} - ${basicSchoolInformationInstance?.educator_Numbers_2008} - ${basicSchoolInformationInstance?.educator_Numbers_2009} - ${basicSchoolInformationInstance?.educator_Numbers_2010} - ${basicSchoolInformationInstance?.educator_Numbers_2011} - ${basicSchoolInformationInstance?.educator_Numbers_2012} - ${basicSchoolInformationInstance?.educator_Numbers_2013}</p>";
                         infowindow.setContent(txt);
                         infowindow.open(map, marker);
                     }
@@ -100,7 +118,7 @@
 </head>
 <body>
 
-<table>
+<table id="main_table">
     <tr>
         <td>
             <g:if test="${basicSchoolInformationInstanceTotal == 1}">
@@ -140,6 +158,7 @@
 <g:form>
 <g:each in="${basicSchoolInformationInstanceList}" status="i" var="basicSchoolInformationInstance">
 <g:if test="${i == 0}">
+<div id="SS" style="{font-weight: lighter; }">Use % for wildcard search. Not case sensitive.</div>
 <ul style="list-style-type: none; padding-left: 0px;">
 <li>
     <span style="  width: 40px;">
@@ -386,7 +405,7 @@
 </ul>
 </g:if>
 </g:each>
-<span style="float: left; padding: 30px 0 0 0 ; font-size: 10px;">Powered by <a href="http://korwe.com">Korwe</a>.</span>
+<span style="float: left; padding: 30px 0 0 0 ; font-size: 10px;">Powered by <a href="http://korwe.com/schoolsAdvisor">Korwe</a>. v1.0.1</span>
 <span style="float: right;">
 <fieldset class="buttons" style="margin-top: 10px;">
     <g:hiddenField name="xschoolName" value="${basicSchoolInformationInstance?.schoolName}"/>

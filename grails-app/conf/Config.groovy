@@ -74,12 +74,12 @@ log4j = {
     appenders {
         console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
     }
-    appenders {
-        file name:'file', file:'schoolsDataUpdated.log'
-    }
+    //appenders {
+       // file name:'file', file:'schoolsDataUpdated.log'
+    //}
     root {
         error 'stdout'
-        info 'file'
+       // info 'file'
         additivity = true
     }
     /*
