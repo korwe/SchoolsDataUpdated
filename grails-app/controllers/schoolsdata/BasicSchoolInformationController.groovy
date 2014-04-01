@@ -182,8 +182,7 @@ class BasicSchoolInformationController {
     def filter(Integer max) {
         def ufr
         if (session["filterResults"] == null) {
-            ufr = BasicSchoolInformation.list()
-            Collections.shuffle(ufr)
+            ufr = BasicSchoolInformation.executeQuery('from BasicSchoolInformation order by rand()', [max: pageListSize])
 
             def basicSchoolInformationInstanceSearchParams = new BasicSchoolInformation()
             ufr.add(0, basicSchoolInformationInstanceSearchParams)
