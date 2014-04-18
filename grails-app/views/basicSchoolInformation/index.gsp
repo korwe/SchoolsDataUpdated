@@ -7,7 +7,7 @@
         * 26/3/2014
         * version 1.1
     --%>
-        <meta name="layout" content="iframe">
+        <meta name="layout" content="skinny">
         <g:set var="entityName" value="${message(code: 'basicSchoolInformation.label', default: 'Basic School Info')}"/>
         <title><g:message code="basicSchoolInformation.label" args="[entityName]"/></title>
         <g:javascript library="jquery" />
@@ -431,10 +431,10 @@
                     </ul>
                     </g:if>
                     </g:each>
-                    <span style="float: left; padding: 30px 0 0 0 ; font-size: 10px;">Powered by <a href="http://korwe.com/schoolsAdvisor">Korwe</a>. v1.1.0</span>
+                    <span style="float: left; padding: 30px 0 0 0 ; font-size: 10px;">Powered by <a href="http://korwe.com/schoolsAdvisor">Korwe</a>. v1.2.0</span>
                     <span style="float: right;">
                         <fieldset class="buttons" style="margin-top: 10px;">
-                            <g:actionSubmit class="filterBy" action="filterBy" value="${message(code: 'default.button.filter.label', default: 'Filter')}"/>
+                            <g:actionSubmit class="filterBy" action="filterFromForm" value="${message(code: 'default.button.filter.label', default: 'Filter')}"/>
                             <g:actionSubmit class="reset" action="reset" value="${message(code: 'default.button.reset.label', default: 'Reset')}"/>
                         </fieldset>
                     </span>

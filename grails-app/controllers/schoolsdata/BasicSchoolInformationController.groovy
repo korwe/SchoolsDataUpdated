@@ -2,12 +2,11 @@ package schoolsdata
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.springframework.dao.DataIntegrityViolationException
 import grails.converters.*;
 /*
 * author: david DOT hislop AT korwe DOT com
-* 26/3/2014
-* version 1.1
+* 18/4/2014
+* version 1.2
 */
 
 class BasicSchoolInformationController {
@@ -33,22 +32,7 @@ class BasicSchoolInformationController {
         redirect(action: "index")
     }
 
-    def mappedSchoolInformation() {
-    }
-
-    def basicSchoolInformation(Long id) {
-        def basicSchoolInformationInstance = BasicSchoolInformation.get(id)
-        if (!basicSchoolInformationInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'basicSchoolInformation.label', default: 'BasicSchoolInformation'), id])
-            redirect(action: "list")
-            return
-        }
-
-        [basicSchoolInformationInstance: basicSchoolInformationInstance]
-    }
-
     def index() {
-        redirect(action: "filter", params: params)
     }
 
     def getQuintiles() {
@@ -87,116 +71,27 @@ class BasicSchoolInformationController {
         [result: result]
     }
 
-    def list(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        [basicSchoolInformationList: BasicSchoolInformation.list(params), basicSchoolInformationTotal: BasicSchoolInformation.count()]
-    }
-
-    def create() {
-        [basicSchoolInformationInstance: new BasicSchoolInformation(params)]
-    }
-
-    def save() {
-        def basicSchoolInformationInstance = new BasicSchoolInformation(params)
-        if (!basicSchoolInformationInstance.save(flush: true)) {
-            render(view: "create", model: [basicSchoolInformationInstance: basicSchoolInformationInstance])
-            return
-        }
-
-        flash.message = message(code: 'default.created.message', args: [message(code: 'basicSchoolInformation.label', default: 'BasicSchoolInformation'), basicSchoolInformationInstance.id])
-        redirect(action: "show", id: basicSchoolInformationInstance.id)
-    }
-
-    def show(Long id) {
-        def basicSchoolInformationInstance = BasicSchoolInformation.get(id)
-        if (!basicSchoolInformationInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'basicSchoolInformation.label', default: 'BasicSchoolInformation'), id])
-            redirect(action: "list")
-            return
-        }
-
-        [basicSchoolInformationInstance: basicSchoolInformationInstance]
-    }
-
-    def edit(Long id) {
-        def basicSchoolInformationInstance = BasicSchoolInformation.get(id)
-        if (!basicSchoolInformationInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'basicSchoolInformation.label', default: 'BasicSchoolInformation'), id])
-            redirect(action: "list")
-            return
-        }
-
-        [basicSchoolInformationInstance: basicSchoolInformationInstance]
-    }
-
-    def update(Long id, Long version) {
-        def basicSchoolInformationInstance = BasicSchoolInformation.get(id)
-        if (!basicSchoolInformationInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'basicSchoolInformation.label', default: 'BasicSchoolInformation'), id])
-            redirect(action: "list")
-            return
-        }
-
-        if (version != null) {
-            if (basicSchoolInformationInstance.version > version) {
-                basicSchoolInformationInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
-                        [message(code: 'basicSchoolInformation.label', default: 'BasicSchoolInformation')] as Object[],
-                        "Another user has updated this BasicSchoolInformation while you were editing")
-                render(view: "edit", model: [basicSchoolInformationInstance: basicSchoolInformationInstance])
-                return
-            }
-        }
-
-        basicSchoolInformationInstance.properties = params
-
-        if (!basicSchoolInformationInstance.save(flush: true)) {
-            render(view: "edit", model: [basicSchoolInformationInstance: basicSchoolInformationInstance])
-            return
-        }
-
-        flash.message = message(code: 'default.updated.message', args: [message(code: 'basicSchoolInformation.label', default: 'BasicSchoolInformation'), basicSchoolInformationInstance.id])
-        redirect(action: "show", id: basicSchoolInformationInstance.id)
-    }
-
-    def delete(Long id) {
-        def basicSchoolInformationInstance = BasicSchoolInformation.get(id)
-        if (!basicSchoolInformationInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'basicSchoolInformation.label', default: 'BasicSchoolInformation'), id])
-            redirect(action: "list")
-            return
-        }
-
-        try {
-            basicSchoolInformationInstance.delete(flush: true)
-            flash.message = message(code: 'default.deleted.message', args: [message(code: 'basicSchoolInformation.label', default: 'BasicSchoolInformation'), id])
-            redirect(action: "list")
-        }
-        catch (DataIntegrityViolationException e) {
-            Log.error("DataIntegrityViolationException", e)
-            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'basicSchoolInformation.label', default: 'BasicSchoolInformation'), id])
-            redirect(action: "show", id: id)
-        }
-    }
-
     def filter(Integer max) {
         def filterResults = BasicSchoolInformation.executeQuery('from BasicSchoolInformation order by rand()', [max: pageListSize])
 
         def basicSchoolInformationInstanceSearchParams = new BasicSchoolInformation()
         filterResults.add(0, basicSchoolInformationInstanceSearchParams)//placeholder for dummySchoolInformationSearchParams
 
-        def count = filterResults.size()//includes zero dummy element of search paras
-        def totalSchools = BasicSchoolInformation.count()
-        render( view    : 'mappedSchoolInformation',
+        def basicSchoolInformationTotal = filterResults.size()//includes zero dummy element of search paras
+        def totalSchools = BasicSchoolInformation.count()//excludes zero dummy element
+        render(
+                view    : 'index',
                 model   : [ 'basicSchoolInformationList'         : filterResults,
                             'totalSchools'                       : totalSchools,
-                            'basicSchoolInformationTotal'        : count])
+                                'basicSchoolInformationTotal'        : basicSchoolInformationTotal])
     }
 
-    def filterBy(Integer max) {
+    def filterFromForm(Integer max) {
         def filterResults = filterSchools(params)
-        def totalSchools = filterResults.totalSchools
+        def totalSchools = filterResults?.totalSchools
         if (totalSchools == 0) {
-            render( view   : 'mappedSchoolInformation',
+            render(
+                    view   : 'index',
                     model  : [    'basicSchoolInformationList'            : null,
                                   'totalSchools'                          : 0,
                                   'basicSchoolInformationTotal'           : 0])
@@ -204,12 +99,12 @@ class BasicSchoolInformationController {
         }
 
         def basicSchoolInformationList = filterResults.basicSchoolInformationList
-        def count = basicSchoolInformationList.size()
-        render( template    : 'iframe.gsp',
-                view        : 'mappedSchoolInformation',
+        def basicSchoolInformationTotal = basicSchoolInformationList.size()
+        render(
+                view        : 'index',
                 model       : [ 'basicSchoolInformationList'            : basicSchoolInformationList,
                                 'totalSchools'                          : totalSchools,
-                                'basicSchoolInformationTotal'           : count])
+                                'basicSchoolInformationTotal'           : basicSchoolInformationTotal])
     }
 
     def filterSchools(params) {
@@ -249,36 +144,61 @@ class BasicSchoolInformationController {
         def cquintile = "${quintile}"
 
         def dummySchoolInformationSearchParams = new BasicSchoolInformation()
+
+        if (schoolName) {
         dummySchoolInformationSearchParams.schoolName = schoolName
+        }
+
+        if (province) {
         dummySchoolInformationSearchParams.province = province
+        }
+
+        if (districtMunicipality) {
         dummySchoolInformationSearchParams.districtMunicipality = districtMunicipality
+        }
 
         if (phase_c) {
             dummySchoolInformationSearchParams.phase = "COMBINED SCHOOL"
         }
+
         if (phase_i) {
             def seperator = ''
             if (dummySchoolInformationSearchParams.phase) seperator = '|'
             dummySchoolInformationSearchParams.phase += seperator + "INTERMEDIATE SCHOOL"
         }
+
         if (phase_p) {
             def seperator = ''
             if (dummySchoolInformationSearchParams.phase) seperator = '|'
             dummySchoolInformationSearchParams.phase += seperator + "PRIMARY SCHOOL"
         }
+
         if (phase_f) {
             def seperator = ''
             if (dummySchoolInformationSearchParams.phase) seperator = '|'
             dummySchoolInformationSearchParams.phase += seperator + "FINISHING SCHOOL"
         }
+
         if (phase_s) {
             def seperator = ''
             if (dummySchoolInformationSearchParams.phase) seperator = '|'
             dummySchoolInformationSearchParams.phase += seperator + "SECONDARY SCHOOL"
         }
+
+        if (town_City) {
         dummySchoolInformationSearchParams.town_City = town_City
+            flagChangeSchoolInformationSearchParams = true
+        }
+
+        if (specialisation) {
         dummySchoolInformationSearchParams.specialisation = specialisation
+            flagChangeSchoolInformationSearchParams = true
+        }
+
+        if (quintile) {
         dummySchoolInformationSearchParams.quintile = quintile
+            flagChangeSchoolInformationSearchParams = true
+        }
 
         if (sector_i) {
             dummySchoolInformationSearchParams.sector = "INDEPENDENT"
@@ -427,13 +347,16 @@ class BasicSchoolInformationController {
             //order("town_City")
         }
 
+        log.info("Doing SELECT")
         def basicSchoolInformationList
         try {
             basicSchoolInformationList = BasicSchoolInformation.createCriteria().list(conditionals)
         } catch (Exception ex) {
             log.info(ex.getMessage())
         }
+        log.info("basicSchoolInformationTotal = " +basicSchoolInformationList?.size())
 
+        log.info("Doing COUNT")
         def totalSchools  = BasicSchoolInformation.createCriteria().get() {
             conditionals.delegate = delegate
             conditionals()
@@ -441,8 +364,13 @@ class BasicSchoolInformationController {
                 rowCount()
             }
         }
+        log.info("totalSchools = " +totalSchools)
 
-        basicSchoolInformationList.add(0, dummySchoolInformationSearchParams)
+        if (basicSchoolInformationList == null) {
+            log.info("Init Array")
+            basicSchoolInformationList = new ArrayList<BasicSchoolInformation>();
+        }
+        basicSchoolInformationList.add(0, session["dummySchoolInformationSearchParams"])
         return [basicSchoolInformationList: basicSchoolInformationList, totalSchools: totalSchools]
     }
 
@@ -460,16 +388,19 @@ class BasicSchoolInformationController {
         def filterResults = filterSchools(params)
         def totalSchools = filterResults.totalSchools
         def basicSchoolInformationList = filterResults.basicSchoolInformationList
-        def count = basicSchoolInformationList.size()
+        def basicSchoolInformationTotal = basicSchoolInformationList?.size()
+        log.info("totalSchools = "+totalSchools)
+        log.info("basicSchoolInformationTotal = "+basicSchoolInformationTotal)
         def midLat = (latitudeMax + latitudeMin) / 2.0
         def midLong = (longitudeMax + longitudeMin) / 2.0
-        render(view: 'mappedSchoolInformation', model: ['basicSchoolInformationList'         : basicSchoolInformationList,
-                                                        'basicSchoolInformationTotal'        : count,
-                                                        'totalSchools'                       : totalSchools,
-                                                        'zoom'                               : zm,
-                                                        'midLat'                             : midLat,
-                                                        'midLong'                            : midLong])
-
-
+        log.info ("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+        render(
+                view        : 'basicSchoolInformation',
+                model: ['basicSchoolInformationList'         : basicSchoolInformationList,
+                               'basicSchoolInformationTotal'        : basicSchoolInformationTotal,
+                        'totalSchools'                       : totalSchools,
+                        'zoom'                               : zm,
+                        'midLat'                             : midLat,
+                        'midLong'                            : midLong])
     }
 }
