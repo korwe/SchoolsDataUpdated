@@ -393,7 +393,6 @@ class BasicSchoolInformationController {
         log.info("basicSchoolInformationTotal = "+basicSchoolInformationTotal)
         def midLat = (latitudeMax + latitudeMin) / 2.0
         def midLong = (longitudeMax + longitudeMin) / 2.0
-        log.info ("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
         render(
                 view        : 'basicSchoolInformation',
                 model: ['basicSchoolInformationList'         : basicSchoolInformationList,

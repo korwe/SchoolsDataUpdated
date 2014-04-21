@@ -5,8 +5,8 @@ package schoolsdata
 import org.junit.*
 import grails.test.mixin.*
 
-@TestFor(SchoolsDataController)
-@Mock(SchoolsData)
+@TestFor(BasicSchoolInformationController)
+@Mock(BasicSchoolInformation)
 class SchoolsDataControllerTests {
 
     def populateValidParams(params) {
@@ -57,7 +57,7 @@ class SchoolsDataControllerTests {
         assert response.redirectedUrl == '/schoolsData/list'
 
         populateValidParams(params)
-        def schoolsData = new SchoolsData(params)
+        def schoolsData = new BasicSchoolInformation(params)
 
         assert schoolsData.save() != null
 
@@ -75,7 +75,7 @@ class SchoolsDataControllerTests {
         assert response.redirectedUrl == '/schoolsData/list'
 
         populateValidParams(params)
-        def schoolsData = new SchoolsData(params)
+        def schoolsData = new BasicSchoolInformation(params)
 
         assert schoolsData.save() != null
 
@@ -95,7 +95,7 @@ class SchoolsDataControllerTests {
         response.reset()
 
         populateValidParams(params)
-        def schoolsData = new SchoolsData(params)
+        def schoolsData = new BasicSchoolInformation(params)
 
         assert schoolsData.save() != null
 
@@ -139,7 +139,7 @@ class SchoolsDataControllerTests {
         response.reset()
 
         populateValidParams(params)
-        def schoolsData = new SchoolsData(params)
+        def schoolsData = new BasicSchoolInformation(params)
 
         assert schoolsData.save() != null
         assert SchoolsData.count() == 1
