@@ -1,5 +1,6 @@
 package schoolsdata
 
+import java.util.Locale
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import grails.converters.*;
@@ -25,6 +26,34 @@ class BasicSchoolInformationController {
         if (session["specialisation"] == null) session["specialisation"] = getSpecialisations().sort().result
         if (session["quintile"] == null) session["quintile"] = getQuintiles().sort().result
         if (session["pageListSize"] == null) session["pageListSize"] = pageListSize
+
+        // Preload the preferred locales
+        if (session["locales"] == null) session["locales"] = getPreferredLocales()
+
+    }
+
+    def getPreferredLocales() {
+
+        // List of preferred locales catered for
+        // User selection is limited to this preferred list
+        // Could be written more elegantly, but the purpose is to show functionality
+        // Could be a configuration/properties. See http://grails.org/plugin/locale-configuration
+
+        return [new Locale("en"),
+                new Locale("af"),
+                new Locale("xh"),
+                new Locale("zu"),
+                new Locale("ve"),
+                new Locale("ss"),
+                new Locale("st"),
+                new Locale("ts"),
+                new Locale("nr"),
+                new Locale("tn")]
+    }
+
+    def changeLanguage() {
+        log.info(" Language changed to: " + new Locale(params?.lang).getDisplayLanguage())
+        session['lang'] = params?.lang
     }
 
     def reset() {
@@ -83,7 +112,7 @@ class BasicSchoolInformationController {
                 view    : 'index',
                 model   : [ 'basicSchoolInformationList'         : filterResults,
                             'totalSchools'                       : totalSchools,
-                                'basicSchoolInformationTotal'        : basicSchoolInformationTotal])
+                            'basicSchoolInformationTotal'        : basicSchoolInformationTotal])
     }
 
     def filterFromForm(Integer max) {
@@ -146,15 +175,15 @@ class BasicSchoolInformationController {
         def dummySchoolInformationSearchParams = new BasicSchoolInformation()
 
         if (schoolName) {
-        dummySchoolInformationSearchParams.schoolName = schoolName
+            dummySchoolInformationSearchParams.schoolName = schoolName
         }
 
         if (province) {
-        dummySchoolInformationSearchParams.province = province
+            dummySchoolInformationSearchParams.province = province
         }
 
         if (districtMunicipality) {
-        dummySchoolInformationSearchParams.districtMunicipality = districtMunicipality
+            dummySchoolInformationSearchParams.districtMunicipality = districtMunicipality
         }
 
         if (phase_c) {
@@ -186,17 +215,17 @@ class BasicSchoolInformationController {
         }
 
         if (town_City) {
-        dummySchoolInformationSearchParams.town_City = town_City
+            dummySchoolInformationSearchParams.town_City = town_City
             flagChangeSchoolInformationSearchParams = true
         }
 
         if (specialisation) {
-        dummySchoolInformationSearchParams.specialisation = specialisation
+            dummySchoolInformationSearchParams.specialisation = specialisation
             flagChangeSchoolInformationSearchParams = true
         }
 
         if (quintile) {
-        dummySchoolInformationSearchParams.quintile = quintile
+            dummySchoolInformationSearchParams.quintile = quintile
             flagChangeSchoolInformationSearchParams = true
         }
 
@@ -396,7 +425,7 @@ class BasicSchoolInformationController {
         render(
                 view        : 'basicSchoolInformation',
                 model: ['basicSchoolInformationList'         : basicSchoolInformationList,
-                               'basicSchoolInformationTotal'        : basicSchoolInformationTotal,
+                        'basicSchoolInformationTotal'        : basicSchoolInformationTotal,
                         'totalSchools'                       : totalSchools,
                         'zoom'                               : zm,
                         'midLat'                             : midLat,
