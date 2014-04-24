@@ -58,10 +58,7 @@ class BasicSchoolInformationController {
 
     def reset() {
         session.invalidate()
-        redirect(action: "index")
-    }
-
-    def index() {
+        redirect(action: "filter")
     }
 
     def getQuintiles() {
@@ -104,12 +101,12 @@ class BasicSchoolInformationController {
         def filterResults = BasicSchoolInformation.executeQuery('from BasicSchoolInformation order by rand()', [max: pageListSize])
 
         def basicSchoolInformationInstanceSearchParams = new BasicSchoolInformation()
-        filterResults.add(0, basicSchoolInformationInstanceSearchParams)//placeholder for dummySchoolInformationSearchParams
+        filterResults.add(0, basicSchoolInformationInstanceSearchParams)//placeholder for cachedSchoolInformationSearchParams
 
         def basicSchoolInformationTotal = filterResults.size()//includes zero dummy element of search paras
         def totalSchools = BasicSchoolInformation.count()//excludes zero dummy element
         render(
-                view    : 'index',
+                view    : 'filter',
                 model   : [ 'basicSchoolInformationList'         : filterResults,
                             'totalSchools'                       : totalSchools,
                             'basicSchoolInformationTotal'        : basicSchoolInformationTotal])
@@ -120,7 +117,7 @@ class BasicSchoolInformationController {
         def totalSchools = filterResults?.totalSchools
         if (totalSchools == 0) {
             render(
-                    view   : 'index',
+                    view   : 'filter',
                     model  : [    'basicSchoolInformationList'            : null,
                                   'totalSchools'                          : 0,
                                   'basicSchoolInformationTotal'           : 0])
@@ -130,7 +127,7 @@ class BasicSchoolInformationController {
         def basicSchoolInformationList = filterResults.basicSchoolInformationList
         def basicSchoolInformationTotal = basicSchoolInformationList.size()
         render(
-                view        : 'index',
+                view        : 'filter',
                 model       : [ 'basicSchoolInformationList'            : basicSchoolInformationList,
                                 'totalSchools'                          : totalSchools,
                                 'basicSchoolInformationTotal'           : basicSchoolInformationTotal])
@@ -151,7 +148,6 @@ class BasicSchoolInformationController {
         def phase_p = params?.phase_p
         def phase_s = params?.phase_s
         def phase_f = params?.phase_f
-        def phase = (phase_c == 'on') || (phase_i == 'on') || (phase_p == 'on') || (phase_s == 'on') || (phase_f == 'on')
 
         def specialisation = params?.specialisation
         def cspecialisation = "${specialisation}"
@@ -161,7 +157,6 @@ class BasicSchoolInformationController {
 
         def sector_i = params?.sector_i
         def sector_p = params?.sector_p
-        def sector = (sector_i == 'on') || (sector_p == 'on')
 
         def section21 = params?.section21
 
@@ -172,120 +167,230 @@ class BasicSchoolInformationController {
         def quintile = params?.quintile
         def cquintile = "${quintile}"
 
+        BasicSchoolInformation cachedSchoolInformationSearchParams = session["cachedSchoolInformationSearchParams"]
+        if (cachedSchoolInformationSearchParams == null) {
+            cachedSchoolInformationSearchParams = new BasicSchoolInformation()
+            session["cachedSchoolInformationSearchParams"] = cachedSchoolInformationSearchParams
+        }
+
         def dummySchoolInformationSearchParams = new BasicSchoolInformation()
+        boolean flagChangeSchoolInformationSearchParams = false
 
-        if (schoolName) {
+        if (schoolName && schoolName != cachedSchoolInformationSearchParams?.schoolName) {
+            log.debug("schoolName:"+schoolName)
             dummySchoolInformationSearchParams.schoolName = schoolName
+            flagChangeSchoolInformationSearchParams = true
         }
 
-        if (province) {
+        if (province && province != cachedSchoolInformationSearchParams?.province) {
+            log.debug("province:"+province)
             dummySchoolInformationSearchParams.province = province
+            flagChangeSchoolInformationSearchParams = true
         }
 
-        if (districtMunicipality) {
+        if (districtMunicipality && districtMunicipality != cachedSchoolInformationSearchParams?.districtMunicipality) {
+            log.debug("districtMunicipality:"+districtMunicipality)
             dummySchoolInformationSearchParams.districtMunicipality = districtMunicipality
+            flagChangeSchoolInformationSearchParams = true
         }
 
-        if (phase_c) {
+        if (    (phase_c && !cachedSchoolInformationSearchParams?.phase ) ||
+                (phase_c && cachedSchoolInformationSearchParams?.phase  && !cachedSchoolInformationSearchParams?.phase.contains("COMBINED SCHOOL")) ) {
+            log.debug("phase:"+phase_c)
             dummySchoolInformationSearchParams.phase = "COMBINED SCHOOL"
+            flagChangeSchoolInformationSearchParams = true
+        }
+        else if ((!phase_c && cachedSchoolInformationSearchParams?.phase  && cachedSchoolInformationSearchParams?.phase.contains("COMBINED SCHOOL")) ) {
+            log.debug("phase:"+phase_c)
+            dummySchoolInformationSearchParams.phase.replace("COMBINED SCHOOL|","")
+            dummySchoolInformationSearchParams.phase.replace("|COMBINED SCHOOL","")
+            dummySchoolInformationSearchParams.phase.replace("COMBINED SCHOOL","")
+            flagChangeSchoolInformationSearchParams = true
         }
 
-        if (phase_i) {
+        if (    (phase_i && !cachedSchoolInformationSearchParams?.phase ) ||
+                (phase_i && cachedSchoolInformationSearchParams?.phase  && !cachedSchoolInformationSearchParams?.phase.contains("INTERMEDIATE SCHOOL")) ) {
+            log.debug("phase:"+phase_i)
             def seperator = ''
             if (dummySchoolInformationSearchParams.phase) seperator = '|'
             dummySchoolInformationSearchParams.phase += seperator + "INTERMEDIATE SCHOOL"
+            flagChangeSchoolInformationSearchParams = true
+        }
+        else if ((!phase_i  && cachedSchoolInformationSearchParams?.phase && cachedSchoolInformationSearchParams?.phase.contains("INTERMEDIATE SCHOOL")) ) {
+            log.debug("phase:"+phase_i)
+            dummySchoolInformationSearchParams.phase.replace("INTERMEDIATE SCHOOL|","")
+            dummySchoolInformationSearchParams.phase.replace("|INTERMEDIATE SCHOOL","")
+            dummySchoolInformationSearchParams.phase.replace("INTERMEDIATE SCHOOL","")
+            flagChangeSchoolInformationSearchParams = true
         }
 
-        if (phase_p) {
+        if (    (phase_p && !cachedSchoolInformationSearchParams?.phase ) ||
+                (phase_p && cachedSchoolInformationSearchParams?.phase && !cachedSchoolInformationSearchParams?.phase.contains("PRIMARY SCHOOL")) ) {
+            log.debug("phase:"+phase_p)
             def seperator = ''
             if (dummySchoolInformationSearchParams.phase) seperator = '|'
             dummySchoolInformationSearchParams.phase += seperator + "PRIMARY SCHOOL"
+            flagChangeSchoolInformationSearchParams = true
+        }
+        else if ((!phase_p  && cachedSchoolInformationSearchParams?.phase  && cachedSchoolInformationSearchParams?.phase.contains("PRIMARY SCHOOL")) ) {
+            log.debug("phase:"+phase_p)
+            dummySchoolInformationSearchParams.phase.replace("PRIMARY SCHOOL|","")
+            dummySchoolInformationSearchParams.phase.replace("|PRIMARY SCHOOL","")
+            dummySchoolInformationSearchParams.phase.replace("PRIMARY SCHOOL","")
+            flagChangeSchoolInformationSearchParams = true
         }
 
-        if (phase_f) {
+        if (    (phase_f && !cachedSchoolInformationSearchParams?.phase) ||
+                (phase_f && cachedSchoolInformationSearchParams?.phase  && !cachedSchoolInformationSearchParams?.phase.contains("FINISHING SCHOOL")) ) {
+            log.debug("phase:"+phase_f)
             def seperator = ''
             if (dummySchoolInformationSearchParams.phase) seperator = '|'
             dummySchoolInformationSearchParams.phase += seperator + "FINISHING SCHOOL"
+            flagChangeSchoolInformationSearchParams = true
+        }
+        else if ((!phase_f && cachedSchoolInformationSearchParams?.phase && cachedSchoolInformationSearchParams?.phase.contains("FINISHING SCHOOL")) ) {
+            log.debug("phase:"+phase_f)
+            dummySchoolInformationSearchParams.phase.replace("FINISHING SCHOOL|","")
+            dummySchoolInformationSearchParams.phase.replace("|FINISHING SCHOOL","")
+            dummySchoolInformationSearchParams.phase.replace("FINISHING SCHOOL","")
+            flagChangeSchoolInformationSearchParams = true
         }
 
-        if (phase_s) {
+        if (    (phase_s && !cachedSchoolInformationSearchParams?.phase ) ||
+                (phase_s && cachedSchoolInformationSearchParams?.phase && !cachedSchoolInformationSearchParams?.phase.contains("SECONDARY SCHOOL")) ) {
+            log.debug("phase:"+phase_s)
             def seperator = ''
             if (dummySchoolInformationSearchParams.phase) seperator = '|'
             dummySchoolInformationSearchParams.phase += seperator + "SECONDARY SCHOOL"
+            flagChangeSchoolInformationSearchParams = true
+        }
+        else if ((!phase_s  && cachedSchoolInformationSearchParams?.phase && cachedSchoolInformationSearchParams?.phase.contains("SECONDARY SCHOOL")) ) {
+            log.debug("phase:"+phase_s)
+            dummySchoolInformationSearchParams.phase.replace("SECONDARY SCHOOL|","")
+            dummySchoolInformationSearchParams.phase.replace("|SECONDARY SCHOOL","")
+            dummySchoolInformationSearchParams.phase.replace("SECONDARY SCHOOL","")
+            flagChangeSchoolInformationSearchParams = true
         }
 
-        if (town_City) {
+        if (town_City && town_City != cachedSchoolInformationSearchParams?.town_City) {
+            log.debug("town:"+town_City)
             dummySchoolInformationSearchParams.town_City = town_City
             flagChangeSchoolInformationSearchParams = true
         }
 
-        if (specialisation) {
+        if (specialisation && specialisation != cachedSchoolInformationSearchParams?.specialisation) {
+            log.debug("specialisation:"+specialisation)
             dummySchoolInformationSearchParams.specialisation = specialisation
             flagChangeSchoolInformationSearchParams = true
         }
 
-        if (quintile) {
+        if (quintile && quintile != cachedSchoolInformationSearchParams?.quintile) {
+            log.debug("quintile:"+quintile)
             dummySchoolInformationSearchParams.quintile = quintile
             flagChangeSchoolInformationSearchParams = true
         }
 
-        if (sector_i) {
+        if (    (sector_i && !cachedSchoolInformationSearchParams?.sector ) ||
+                (sector_i && cachedSchoolInformationSearchParams?.sector  && !cachedSchoolInformationSearchParams?.sector.contains("INDEPENDENT")) ) {
+            log.debug("sector:"+sector_i)
             dummySchoolInformationSearchParams.sector = "INDEPENDENT"
+            flagChangeSchoolInformationSearchParams = true
+        }
+        else if ((!sector_i && cachedSchoolInformationSearchParams?.sector && cachedSchoolInformationSearchParams?.sector.contains("INDEPENDENT")) ) {
+            log.debug("sector: clear")
+            dummySchoolInformationSearchParams.phase.replace("INDEPENDENT|","")
+            dummySchoolInformationSearchParams.phase.replace("|INDEPENDENT","")
+            dummySchoolInformationSearchParams.phase.replace("INDEPENDENT","")
+            flagChangeSchoolInformationSearchParams = true
         }
 
-        if (sector_p) {
-            def seperator = ''
-            if (dummySchoolInformationSearchParams.sector) seperator = '|'
-            dummySchoolInformationSearchParams.sector += seperator + "PUBLIC"
+        if (    (sector_p && !cachedSchoolInformationSearchParams?.sector) ||
+                (sector_p && cachedSchoolInformationSearchParams?.sector && !cachedSchoolInformationSearchParams?.sector.contains("PUBLIC")) ) {
+            log.debug("sector:"+sector_p)
+            dummySchoolInformationSearchParams.sector = "PUBLIC"
+            flagChangeSchoolInformationSearchParams = true
+        }
+        else if ((!sector_p  && cachedSchoolInformationSearchParams?.sector && cachedSchoolInformationSearchParams?.sector.contains("PUBLIC")) ) {
+            log.debug("sector:clear")
+            dummySchoolInformationSearchParams.phase.replace("PUBLIC|","")
+            dummySchoolInformationSearchParams.phase.replace("|PUBLIC","")
+            dummySchoolInformationSearchParams.phase.replace("PUBLIC","")
+            flagChangeSchoolInformationSearchParams = true
         }
 
-        if (section21 == 'on') {
+        if ( (section21 == 'on' && !cachedSchoolInformationSearchParams?.section21 ) ||
+             (section21 != 'on' && cachedSchoolInformationSearchParams?.section21  &&  !cachedSchoolInformationSearchParams?.section21.contains("YES"))) {
+            log.debug("section21:"+section21)
             dummySchoolInformationSearchParams.section21 = "YES"
+            flagChangeSchoolInformationSearchParams = true
+        } else if ( (section21 != 'on'&& cachedSchoolInformationSearchParams?.section21  && cachedSchoolInformationSearchParams?.section21.contains("YES"))) {
+            log.debug("section21:"+section21)
+            dummySchoolInformationSearchParams.section21 = "NO"
+            flagChangeSchoolInformationSearchParams = true
         }
 
-        if (noFeeSchool == 'on') {
+        if ( (noFeeSchool == 'on' && !cachedSchoolInformationSearchParams?.noFeeSchool) ||
+                (noFeeSchool != 'on' && cachedSchoolInformationSearchParams?.noFeeSchool &&  !cachedSchoolInformationSearchParams?.noFeeSchool.contains("YES"))) {
+            log.debug("noFeeSchool:"+noFeeSchool)
             dummySchoolInformationSearchParams.noFeeSchool = "YES"
+            flagChangeSchoolInformationSearchParams = true
+        } else if ( (noFeeSchool != 'on' && cachedSchoolInformationSearchParams?.noFeeSchool && cachedSchoolInformationSearchParams?.noFeeSchool.contains("YES"))) {
+            log.debug("noFeeSchool:"+noFeeSchool)
+            dummySchoolInformationSearchParams.noFeeSchool = "NO"
+            flagChangeSchoolInformationSearchParams = true
         }
 
-        if (boardingSchool == 'on') {
+        if ( (boardingSchool == 'on' && !cachedSchoolInformationSearchParams?.boardingSchool ) ||
+                (boardingSchool != 'on' && cachedSchoolInformationSearchParams?.boardingSchool &&  !cachedSchoolInformationSearchParams?.boardingSchool.contains("YES"))) {
+            log.debug("boardingSchool:"+boardingSchool)
             dummySchoolInformationSearchParams.boardingSchool = "YES"
+            flagChangeSchoolInformationSearchParams = true
+        } else if ( (boardingSchool != 'on' && cachedSchoolInformationSearchParams?.boardingSchool && cachedSchoolInformationSearchParams?.boardingSchool.contains("YES"))) {
+            log.debug("boardingSchool:"+boardingSchool)
+            dummySchoolInformationSearchParams.boardingSchool = "NO"
+            flagChangeSchoolInformationSearchParams = true
+        }
+
+        if (flagChangeSchoolInformationSearchParams ) {
+            log.info("Caching search params")
+            session["cachedSchoolInformationSearchParams"] = dummySchoolInformationSearchParams
         }
 
         def conditionals = {
-            if (province && province != 'No Selection') {
+            if ((dummySchoolInformationSearchParams?.province) && (dummySchoolInformationSearchParams?.province != 'No Selection')) {
                 ilike("province", cprovince)
                 log.info( " province: " + province)
             }
 
-            if (districtMunicipality && districtMunicipality != 'No Selection') {
+            if ((dummySchoolInformationSearchParams?.districtMunicipality ) && (dummySchoolInformationSearchParams?.districtMunicipality != 'No Selection')) {
                 ilike("districtMunicipality", cdistrictMunicipality)
                 log.info( " district: " + districtMunicipality)
             }
 
             and {
-                if (phase == true) {
+                if (dummySchoolInformationSearchParams?.phase ) {
                     or {
-                        if (phase_c) {
+                        if (cachedSchoolInformationSearchParams?.phase.contains("COMBINED SCHOOL")) {
                             ilike("phase", 'COMBINED SCHOOL')
                             log.info( " phase: combined")
                         }
 
-                        if (phase_i) {
+                        if (cachedSchoolInformationSearchParams?.phase.contains("INTERMEDIATE SCHOOL")) {
                             ilike("phase", 'INTERMEDIATE SCHOOL')
                             log.info( " phase: intermediate")
                         }
 
-                        if (phase_p) {
+                        if (cachedSchoolInformationSearchParams?.phase.contains("PRIMARY SCHOOL")) {
                             ilike("phase", 'PRIMARY SCHOOL')
                             log.info( " phase: primary")
                         }
 
-                        if (phase_s) {
+                        if (cachedSchoolInformationSearchParams?.phase.contains("SECONDARY SCHOOL")) {
                             ilike("phase", 'SECONDARY SCHOOL')
                             log.info( " phase: secondary")
                         }
 
-                        if (phase_f) {
+                        if (cachedSchoolInformationSearchParams?.phase.contains("FINISHING SCHOOL")) {
                             ilike("phase", 'FINISHING SCHOOL')
                             log.info( " phase: finishing")
                         }
@@ -294,35 +399,35 @@ class BasicSchoolInformationController {
             }
 
             and {
-                if (town_City) {
+                if (dummySchoolInformationSearchParams?.town_City) {
                     ilike("town_City", ctown_City)
                     log.info( " town: " + town_City)
                 }
             }
 
             and {
-                if (specialisation && specialisation != 'No Selection') {
+                if ((dummySchoolInformationSearchParams?.specialisation ) && (dummySchoolInformationSearchParams?.specialisation != 'No Selection')) {
                     ilike("specialisation", cspecialisation)
                     log.info( " specialisation: " + specialisation)
                 }
             }
 
             and {
-                if (schoolName) {
+                if (dummySchoolInformationSearchParams?.schoolName) {
                     ilike("schoolName", cschoolName)
                     log.info( " schoolName: " + cschoolName)
                 }
             }
 
             and {
-                if (sector == true) {
+                if (dummySchoolInformationSearchParams?.sector != null) {
                     or {
-                        if (sector_i) {
+                        if (cachedSchoolInformationSearchParams?.sector.contains("INDEPENDENT")) {
                             ilike("sector", 'INDEPENDENT')
                             log.info( " sector: independent")
                         }
 
-                        if (sector_p) {
+                        if (cachedSchoolInformationSearchParams?.sector.contains("PUBLIC")) {
                             ilike("sector", 'PUBLIC')
                             log.info( " sector: public")
                         }
@@ -331,28 +436,28 @@ class BasicSchoolInformationController {
             }
 
             and {
-                if (section21 == 'on') {
+                if (dummySchoolInformationSearchParams?.section21 == 'YES') {
                     ilike("section21", 'YES')
                     log.info( " section21: " + section21)
                 }
             }
 
             and {
-                if (noFeeSchool == 'on') {
+                if (dummySchoolInformationSearchParams?.noFeeSchool == 'YES') {
                     ilike("noFeeSchool", 'YES')
                     log.info( " noFeeSchool: " + noFeeSchool)
                 }
             }
 
             and {
-                if (boardingSchool == 'on') {
+                if (dummySchoolInformationSearchParams?.boardingSchool == 'YES') {
                     ilike("boardingSchool", 'TRUE')
                     log.info( " boardingSchool: " + boardingSchool)
                 }
             }
 
             and {
-                if (quintile && quintile != 'No Selection') {
+                if ((dummySchoolInformationSearchParams?.quintile != null)&&(dummySchoolInformationSearchParams?.quintile != 'No Selection')) {
                     ilike("quintile", cquintile)
                     log.info( " quintile: " + quintile)
                 }
@@ -399,7 +504,7 @@ class BasicSchoolInformationController {
             log.info("Init Array")
             basicSchoolInformationList = new ArrayList<BasicSchoolInformation>();
         }
-        basicSchoolInformationList.add(0, session["dummySchoolInformationSearchParams"])
+        basicSchoolInformationList.add(0, session["cachedSchoolInformationSearchParams"])
         return [basicSchoolInformationList: basicSchoolInformationList, totalSchools: totalSchools]
     }
 
